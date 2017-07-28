@@ -73,13 +73,13 @@
                     o.speedX *= -1
                 }
 
-                o.boundX = function() {
+                o.boundY = function() {
                     o.speedY *= -1
                 }
 
                 o.bound = function() {
                     o.boundX()
-                    o.boundX()
+                    o.boundY()
                 }
 
                 o.move = function() {
