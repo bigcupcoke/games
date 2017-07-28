@@ -43,6 +43,62 @@
                     o.x += o.speed
                 }
 
+                o.collide = function(ball) {
+                    var result = false
+                    if (ball.y + ball.img.height > o.y) {
+                        if (ball.x > o.x && ball.x < o.x + o.img.width) {
+                            log('相撞')
+                            result = true
+                        }
+                    }
+                    return result
+                }
+
+                return o
+            }
+
+            var Ball = function() {
+                var img = imageFromPath('ball.png')
+
+                var o = {
+                    img: img,
+                    x: 100,
+                    y: 280,
+                    speedX: 5,
+                    speedY: 5,
+                    fired: false,
+                }
+
+                o.boundX = function() {
+                    o.speedX *= -1
+                }
+
+                o.boundX = function() {
+                    o.speedY *= -1
+                }
+
+                o.bound = function() {
+                    o.boundX()
+                    o.boundX()
+                }
+
+                o.move = function() {
+                    if (o.fired) {
+                        if (o.x < 0 || o.x > 500) {
+                            o.boundX()
+                        }
+                        if (o.y < 0 || o.y > 400) {
+                            o.boundY()
+                        }
+                        o.x += o.speedX
+                        o.y += o.speedY
+                    }
+                }
+
+                o.fire = function() {
+                    o.fired = true
+                }
+
                 return o
             }
 
@@ -109,11 +165,24 @@
 
             var __main = function() {
                 var paddle = Paddle()
+
                 var game = Game()
+                 ball = Ball()
+
                 game.registerAction('a', paddle.moveLeft)
                 game.registerAction('d', paddle.moveRight)
+                game.registerAction('f', ball.fire)
+
+                game.update = function() {
+                    ball.move()
+                    if (paddle.collide(ball)) {
+                        ball.bound()
+                    }
+                }
+
                 game.draw = function() {
                     game.drawImg(paddle)
+                    game.drawImg(ball)
                 }
             }
 
