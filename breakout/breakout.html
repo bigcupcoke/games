@@ -35,12 +35,21 @@
                     rightDown: false,
                 }
 
+                o.move = function(x) {
+                    if(x < 0) {
+                        x = 0
+                    } else if (x > 500 - o.img.width) {
+                        x = 500 - o.img.width
+                    }
+                    o.x = x
+                }
+
                 o.moveLeft = function() {
-                    o.x -= o.speed
+                    o.move(o.x - o.speed)
                 }
 
                 o.moveRight = function() {
-                    o.x += o.speed
+                    o.move(o.x + o.speed)
                 }
 
                 o.collide = function(ball) {
@@ -102,6 +111,37 @@
                 return o
             }
 
+            var Block = function() {
+                var img = imageFromPath('block.png')
+
+                var o = {
+                    img: img,
+                    x: 100,
+                    y: 100,
+                    alive: true,
+                }
+
+                o.rectIntersects = function(a, b) {
+                    var o = a
+                    if (b.y > o.y && b.y < o.y + o.img.height) {
+                        if (b.x > o.x && b.x < o.x + o.img.width) {
+                            return true
+                        }
+                    }
+                    return false
+                }
+
+                o.collide = function(b) {
+                    return o.alive && (o.rectIntersects(o, b) || o.rectIntersects(b, o))
+                }
+
+                o.kill = function() {
+                    o.alive = false
+                }
+
+                return o
+            }
+
             var Game = function() {
                 var g = {
                     actions: {},
@@ -147,7 +187,6 @@
                     var actions = Object.keys(g.actions)
                     actions.forEach(function(key) {
                         if (g.keydowns[key]) {
-                            log('actions', g.actions[key])
                             g.actions[key]()
                         }
                     })
@@ -162,27 +201,52 @@
                 return g
             }
 
-
             var __main = function() {
                 var paddle = Paddle()
 
                 var game = Game()
-                 ball = Ball()
-
                 game.registerAction('a', paddle.moveLeft)
                 game.registerAction('d', paddle.moveRight)
+
+                var ball = Ball()
                 game.registerAction('f', ball.fire)
+
+
+                var blocks = []
+                for (var i = 0; i < 15; i++) {
+                    var b = Block()
+                    //  set X, Y
+                    b.x = 40 * i
+                    blocks.push(b)
+                }
 
                 game.update = function() {
                     ball.move()
+
                     if (paddle.collide(ball)) {
                         ball.bound()
                     }
+
+                    for (var i = 0; i < blocks.length; i++) {
+                        var b = blocks[i]
+                        if(b.collide(ball)) {
+                            ball.boundY()
+                            b.kill()
+                        }
+                    }
+
                 }
 
                 game.draw = function() {
                     game.drawImg(paddle)
                     game.drawImg(ball)
+
+                    for (var i = 0; i < blocks.length; i++) {
+                        var b = blocks[i]
+                        if (b.alive) {
+                            game.drawImg(b)
+                        }
+                    }
                 }
             }
 
