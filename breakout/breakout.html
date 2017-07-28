@@ -4,6 +4,9 @@
         <meta charset="utf-8">
         <title>breakout</title>
         <style media="screen">
+            body {
+                background-color: darkslategrey;
+            }
             canvas {
                 border: 1px solid gray;
             }
@@ -14,19 +17,107 @@
         <script type="text/javascript">
             var log = console.log.bind(console)
 
-            var canvas = document.querySelector('#dj-canvas')
-            var context = canvas.getContext('2d')
-            var img = new Image()
-            img.onload = function() {
-                context.drawImage(img, 100, 380)
+            var imageFromPath = function(path) {
+                var img = new Image()
+                img.src = path
+                return img
             }
-            img.src = 'paddle.png'
 
-            window.addEventListener('keydown', function(e) {
-                if (this.key === 'a') {
-
+            var Paddle = function() {
+                var img = imageFromPath('paddle.png')
+                // log('img', img)
+                var o = {
+                    img: img,
+                    x: 100,
+                    y: 300,
+                    speed: 5,
+                    leftDown: false,
+                    rightDown: false,
                 }
-            })
+
+                o.moveLeft = function() {
+                    o.x -= o.speed
+                }
+
+                o.moveRight = function() {
+                    o.x += o.speed
+                }
+
+                return o
+            }
+
+            var Game = function() {
+                var g = {
+                    actions: {},
+                    keydowns: {
+                        'a': false,
+                        'd': false,
+                    },
+                    update: function() {},
+                    draw: function() {},
+                }
+
+                var canvas = document.querySelector('#dj-canvas')
+                var context = canvas.getContext('2d')
+
+                g.canvas = canvas
+                g.context = context
+
+                g.drawImg = function(o) {
+                    // log('o', this)
+                    this.context.drawImage(o.img, o.x, o.y)
+                }
+
+                g.clear = function() {
+                    this.context.clearRect(0, 0, canvas.width, canvas.height)
+                }
+
+                // change keydowns  state
+                window.addEventListener('keydown', function(e) {
+                    g.keydowns[e.key] = true
+                })
+                window.addEventListener('keyup', function(e) {
+                    g.keydowns[e.key] = false
+                })
+
+                //  registerAction
+                g.registerAction = function(key, callback) {
+                    g.actions[key] = callback
+                    log('cb', callback)
+                }
+
+                //  timer
+                setInterval(function () {
+                    var actions = Object.keys(g.actions)
+                    actions.forEach(function(key) {
+                        if (g.keydowns[key]) {
+                            log('actions', g.actions[key])
+                            g.actions[key]()
+                        }
+                    })
+
+                    g.update()
+                    // clear
+                    g.clear()
+                    //  draw
+                    g.draw()
+                }, 1000 / 60)
+
+                return g
+            }
+
+
+            var __main = function() {
+                var paddle = Paddle()
+                var game = Game()
+                game.registerAction('a', paddle.moveLeft)
+                game.registerAction('d', paddle.moveRight)
+                game.draw = function() {
+                    game.drawImg(paddle)
+                }
+            }
+
+             __main()
         </script>
     </body>
 </html>
