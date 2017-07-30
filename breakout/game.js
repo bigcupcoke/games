@@ -38,8 +38,10 @@ var Game = function(fps) {
         // log('cb', callback)
     }
 
-    //  timer
-    setInterval(function () {
+    // loop render
+    //  timeout 递归调用
+    var renderLoop = function(fps) {
+        //  timer
         var actions = Object.keys(g.actions)
         actions.forEach(function(key) {
             if (g.keydowns[key]) {
@@ -52,7 +54,15 @@ var Game = function(fps) {
         g.clear()
         //  draw
         g.draw()
-    }, 1000 / fps)
+
+        // log('render success')
+        setTimeout(function () {
+            // log('fps', window.fps)
+            renderLoop()
+        }, 1000 / window.fps)
+    }
+
+    renderLoop()
 
     return g
 }
