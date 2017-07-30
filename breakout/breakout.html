@@ -16,12 +16,13 @@
         <script src="ball.js" charset="utf-8"></script>
         <script src="block.js" charset="utf-8"></script>
         <script src="game.js" charset="utf-8"></script>
+        <script src="level.js" charset="utf-8"></script>
     </head>
     <body>
         <canvas id="dj-canvas" width="500" height="400"></canvas>
         <script type="text/javascript">
 
-            var paused = false
+            window.paused = false
             var pause = function() {
                 window.addEventListener('keydown', function(e) {
                     if (e.key === 'p') {
@@ -29,32 +30,37 @@
                     }
                 })
             }
-
+            // window.addEventListener('keydown', function(e) {
+            //     var k = e.key
+            //     if (k === 'p') {
+            //         //  paused
+            //         window
+            //     }
+            // })
+            var loadLevel = function(n) {
+                var n = n - 1
+                var level = levels[n]
+                var blocks = []
+                level.forEach(function(e) {
+                    log(e, 'e')
+                    var b = Block(e)
+                    blocks.push(b)
+                })
+                return blocks
+            }
 
             var __main = function() {
 
-                pause()
-
                 var paddle = Paddle()
 
-                var game = Game()
+                var game = Game(60)
                 game.registerAction('a', paddle.moveLeft)
                 game.registerAction('d', paddle.moveRight)
 
                 var ball = Ball()
                 game.registerAction('f', ball.fire)
 
-
-                var blocks = []
-                for (var i = 0; i < 80; i++) {
-                    var b = Block()
-                    //  set X, Y
-                    var x = i % 17
-                    b.x = Math.random() * 1000
-                    b.y = Math.random() * 300
-                    blocks.push(b)
-                }
-
+                var blocks = loadLevel(1)
                 game.update = function() {
                     if (paused) {
                         return

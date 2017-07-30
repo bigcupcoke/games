@@ -1,11 +1,13 @@
-var Block = function() {
+var Block = function(positon) {
     var img = imageFromPath('block.png')
 
+    var p = positon
     var o = {
         img: img,
-        x: 100,
-        y: 100,
+        x: p.x,
+        y: p.y,
         alive: true,
+        lives: p.lives || 1,
     }
 
     o.rectIntersects = function(a, b) {
