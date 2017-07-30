@@ -1,12 +1,10 @@
-var Game = function(fps) {
+var Game = function(fps, images, runCallback) {
     var g = {
         actions: {},
-        keydowns: {
-            'a': false,
-            'd': false,
-        },
+        keydowns: {},
         update: function() {},
         draw: function() {},
+        images: {},
     }
 
     var canvas = document.querySelector('#dj-canvas')
@@ -17,7 +15,7 @@ var Game = function(fps) {
 
     g.drawImg = function(o) {
         // log('o', this)
-        this.context.drawImage(o.img, o.x, o.y)
+        g.context.drawImage(o.img, o.x, o.y)
     }
 
     g.clear = function() {
@@ -62,7 +60,36 @@ var Game = function(fps) {
         }, 1000 / window.fps)
     }
 
-    renderLoop()
+    var loads = []
+    var names = Object.keys(images)
+    names.forEach(function(name, i) {
+        var path = images[name]
+        let img = new Image()
+        img.src = path
+        img.onload = function() {
+            // 存入 g.images 中
+            g.images[name] = img
+            loads.push(1)
+            if (loads.length === names.length) {
+                g.run()
+            }
+        }
+    })
+
+    g.imageByName = function(name) {
+        var img = g.images[name]
+        var image = {
+            w: img.width,
+            h: img.height,
+            image: img,
+        }
+        return image
+    }
+
+    g.run = function() {
+        runCallback(g)
+        renderLoop()
+    }
 
     return g
 }

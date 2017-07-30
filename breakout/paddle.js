@@ -1,5 +1,5 @@
-var Paddle = function() {
-    var img = imageFromPath('paddle.png')
+var Paddle = function(game) {
+    // var img = imageFromPath('paddle.png')
     // log('img', img)
     var o = {
         img: img,
@@ -9,7 +9,10 @@ var Paddle = function() {
         leftDown: false,
         rightDown: false,
     }
-
+    var img = game.imageByName('paddle')
+    o.img = img.image
+    o.w = img.w
+    o.h = img.h
     o.move = function(x) {
         if(x < 0) {
             x = 0

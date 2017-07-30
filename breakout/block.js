@@ -1,7 +1,8 @@
-var Block = function(positon) {
-    var img = imageFromPath('block.png')
+var Block = function(game, positon) {
+    // var img = imageFromPath('block.png')
 
     var p = positon
+    var img = game.imageByName('block')
     var o = {
         img: img,
         x: p.x,
@@ -9,6 +10,9 @@ var Block = function(positon) {
         alive: true,
         lives: p.lives || 1,
     }
+    o.img = img.image
+    o.w = img.w
+    o.h = img.h
 
     o.rectIntersects = function(a, b) {
         var o = a

@@ -1,6 +1,6 @@
-var Ball = function() {
-    var img = imageFromPath('ball.png')
-
+var Ball = function(game) {
+    // var img = imageFromPath('ball.png')
+    var img = game.imageByName('ball')
     var o = {
         img: img,
         x: 100,
@@ -9,7 +9,9 @@ var Ball = function() {
         speedY: 5,
         fired: false,
     }
-
+    o.img = img.image
+    o.w = img.w
+    o.h = img.h
     o.boundX = function() {
         o.speedX *= -1
     }
