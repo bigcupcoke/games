@@ -21,35 +21,47 @@
     <body>
         <canvas id="dj-canvas" width="500" height="400"></canvas>
         <script type="text/javascript">
-
-            window.paused = false
-            var pause = function() {
-                window.addEventListener('keydown', function(e) {
-                    if (e.key === 'p') {
-                        paused = !paused
-                    }
-                })
-            }
-            // window.addEventListener('keydown', function(e) {
-            //     var k = e.key
-            //     if (k === 'p') {
-            //         //  paused
-            //         window
-            //     }
-            // })
             var loadLevel = function(n) {
                 var n = n - 1
                 var level = levels[n]
                 var blocks = []
                 level.forEach(function(e) {
-                    log(e, 'e')
+                    // log(e, 'e')
                     var b = Block(e)
                     blocks.push(b)
                 })
                 return blocks
             }
 
+            var enableDebugMode = function(enable) {
+                if (!enable) {
+                    return
+                }
+
+                //  debug pause
+                window.paused = false
+                var pause = function() {
+                    window.addEventListener('keydown', function(e) {
+                        if (e.key === 'p') {
+                            paused = !paused
+                        }
+                    })
+                }
+
+                //  debug level
+                window.addEventListener('keydown', function(e) {
+                    var k = e.key
+                    if (k === 'p') {
+                        //  paused
+                        window.paused = !window.paused
+                    } else if ('123456789'.includes(k)) {
+                        blocks = loadLevel(Number(k))
+                    }
+                })
+            }
+
             var __main = function() {
+                enableDebugMode(true)
 
                 var paddle = Paddle()
 
@@ -60,7 +72,8 @@
                 var ball = Ball()
                 game.registerAction('f', ball.fire)
 
-                var blocks = loadLevel(1)
+                window.blocks = []
+                blocks = loadLevel(1)
                 game.update = function() {
                     if (paused) {
                         return
