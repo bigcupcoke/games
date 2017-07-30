@@ -29,7 +29,7 @@
                 var o = {
                     img: img,
                     x: 100,
-                    y: 300,
+                    y: 390,
                     speed: 5,
                     leftDown: false,
                     rightDown: false,
@@ -72,7 +72,7 @@
                 var o = {
                     img: img,
                     x: 100,
-                    y: 280,
+                    y: 380,
                     speedX: 5,
                     speedY: 5,
                     fired: false,
@@ -142,6 +142,15 @@
                 return o
             }
 
+
+            var paused = false
+            var pause = function() {
+                window.addEventListener('keydown', function(e) {
+                    if (e.key === 'p') {
+                        paused = !paused
+                    }
+                })
+            }
             var Game = function() {
                 var g = {
                     actions: {},
@@ -196,12 +205,15 @@
                     g.clear()
                     //  draw
                     g.draw()
-                }, 1000 / 60)
+                }, 1000 / 45)
 
                 return g
             }
 
             var __main = function() {
+
+                pause()
+
                 var paddle = Paddle()
 
                 var game = Game()
@@ -213,14 +225,19 @@
 
 
                 var blocks = []
-                for (var i = 0; i < 15; i++) {
+                for (var i = 0; i < 80; i++) {
                     var b = Block()
                     //  set X, Y
-                    b.x = 40 * i
+                    var x = i % 17
+                    b.x = Math.random() * 1000
+                    b.y = Math.random() * 300
                     blocks.push(b)
                 }
 
                 game.update = function() {
+                    if (paused) {
+                        return
+                    }
                     ball.move()
 
                     if (paddle.collide(ball)) {
