@@ -35,7 +35,7 @@ var Game = function(fps) {
     //  registerAction
     g.registerAction = function(key, callback) {
         g.actions[key] = callback
-        log('cb', callback)
+        // log('cb', callback)
     }
 
     //  timer

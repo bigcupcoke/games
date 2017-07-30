@@ -25,7 +25,10 @@ var Block = function(positon) {
     }
 
     o.kill = function() {
-        o.alive = false
+        o.lives--
+        if (o.lives <1) {
+            o.alive = false
+        }
     }
 
     return o
