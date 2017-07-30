@@ -11,137 +11,15 @@
                 border: 1px solid gray;
             }
         </style>
+        <script src="utils.js" charset="utf-8"></script>
+        <script src="paddle.js" charset="utf-8"></script>
+        <script src="ball.js" charset="utf-8"></script>
+        <script src="block.js" charset="utf-8"></script>
+        <script src="game.js" charset="utf-8"></script>
     </head>
     <body>
         <canvas id="dj-canvas" width="500" height="400"></canvas>
         <script type="text/javascript">
-            var log = console.log.bind(console)
-
-            var imageFromPath = function(path) {
-                var img = new Image()
-                img.src = path
-                return img
-            }
-
-            var Paddle = function() {
-                var img = imageFromPath('paddle.png')
-                // log('img', img)
-                var o = {
-                    img: img,
-                    x: 100,
-                    y: 390,
-                    speed: 5,
-                    leftDown: false,
-                    rightDown: false,
-                }
-
-                o.move = function(x) {
-                    if(x < 0) {
-                        x = 0
-                    } else if (x > 500 - o.img.width) {
-                        x = 500 - o.img.width
-                    }
-                    o.x = x
-                }
-
-                o.moveLeft = function() {
-                    o.move(o.x - o.speed)
-                }
-
-                o.moveRight = function() {
-                    o.move(o.x + o.speed)
-                }
-
-                o.collide = function(ball) {
-                    var result = false
-                    if (ball.y + ball.img.height > o.y) {
-                        if (ball.x > o.x && ball.x < o.x + o.img.width) {
-                            log('相撞')
-                            result = true
-                        }
-                    }
-                    return result
-                }
-
-                return o
-            }
-
-            var Ball = function() {
-                var img = imageFromPath('ball.png')
-
-                var o = {
-                    img: img,
-                    x: 100,
-                    y: 380,
-                    speedX: 5,
-                    speedY: 5,
-                    fired: false,
-                }
-
-                o.boundX = function() {
-                    o.speedX *= -1
-                }
-
-                o.boundY = function() {
-                    o.speedY *= -1
-                }
-
-                o.bound = function() {
-                    o.boundX()
-                    o.boundY()
-                }
-
-                o.move = function() {
-                    if (o.fired) {
-                        if (o.x < 0 || o.x > 500) {
-                            o.boundX()
-                        }
-                        if (o.y < 0 || o.y > 400) {
-                            o.boundY()
-                        }
-                        o.x += o.speedX
-                        o.y += o.speedY
-                    }
-                }
-
-                o.fire = function() {
-                    o.fired = true
-                }
-
-                return o
-            }
-
-            var Block = function() {
-                var img = imageFromPath('block.png')
-
-                var o = {
-                    img: img,
-                    x: 100,
-                    y: 100,
-                    alive: true,
-                }
-
-                o.rectIntersects = function(a, b) {
-                    var o = a
-                    if (b.y > o.y && b.y < o.y + o.img.height) {
-                        if (b.x > o.x && b.x < o.x + o.img.width) {
-                            return true
-                        }
-                    }
-                    return false
-                }
-
-                o.collide = function(b) {
-                    return o.alive && (o.rectIntersects(o, b) || o.rectIntersects(b, o))
-                }
-
-                o.kill = function() {
-                    o.alive = false
-                }
-
-                return o
-            }
-
 
             var paused = false
             var pause = function() {
@@ -151,64 +29,7 @@
                     }
                 })
             }
-            var Game = function() {
-                var g = {
-                    actions: {},
-                    keydowns: {
-                        'a': false,
-                        'd': false,
-                    },
-                    update: function() {},
-                    draw: function() {},
-                }
 
-                var canvas = document.querySelector('#dj-canvas')
-                var context = canvas.getContext('2d')
-
-                g.canvas = canvas
-                g.context = context
-
-                g.drawImg = function(o) {
-                    // log('o', this)
-                    this.context.drawImage(o.img, o.x, o.y)
-                }
-
-                g.clear = function() {
-                    this.context.clearRect(0, 0, canvas.width, canvas.height)
-                }
-
-                // change keydowns  state
-                window.addEventListener('keydown', function(e) {
-                    g.keydowns[e.key] = true
-                })
-                window.addEventListener('keyup', function(e) {
-                    g.keydowns[e.key] = false
-                })
-
-                //  registerAction
-                g.registerAction = function(key, callback) {
-                    g.actions[key] = callback
-                    log('cb', callback)
-                }
-
-                //  timer
-                setInterval(function () {
-                    var actions = Object.keys(g.actions)
-                    actions.forEach(function(key) {
-                        if (g.keydowns[key]) {
-                            g.actions[key]()
-                        }
-                    })
-
-                    g.update()
-                    // clear
-                    g.clear()
-                    //  draw
-                    g.draw()
-                }, 1000 / 45)
-
-                return g
-            }
 
             var __main = function() {
 

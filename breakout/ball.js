@@ -1,0 +1,44 @@
+var Ball = function() {
+    var img = imageFromPath('ball.png')
+
+    var o = {
+        img: img,
+        x: 100,
+        y: 380,
+        speedX: 5,
+        speedY: 5,
+        fired: false,
+    }
+
+    o.boundX = function() {
+        o.speedX *= -1
+    }
+
+    o.boundY = function() {
+        o.speedY *= -1
+    }
+
+    o.bound = function() {
+        o.boundX()
+        o.boundY()
+    }
+
+    o.move = function() {
+        if (o.fired) {
+            if (o.x < 0 || o.x > 500) {
+                o.boundX()
+            }
+            if (o.y < 0 || o.y > 400) {
+                o.boundY()
+            }
+            o.x += o.speedX
+            o.y += o.speedY
+        }
+    }
+
+    o.fire = function() {
+        o.fired = true
+    }
+
+    return o
+}
