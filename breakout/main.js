@@ -10,7 +10,7 @@ var loadLevel = function(game, n) {
     return blocks
 }
 
-var enableDebugMode = function(game, enable) {
+var enableDebugMode = function(game, ball, enable) {
     if (!enable) {
         return
     }
@@ -42,6 +42,35 @@ var enableDebugMode = function(game, enable) {
     input.addEventListener('input', function(e) {
         window.fps = this.value
     })
+
+    // mouse event
+    var enableDrag = false
+    var canvas = game.canvas
+    canvas.addEventListener('mousedown', function(e) {
+        var x = e.offsetX
+        var y = e.offsetY
+        // log('down', x, y)
+        if (ball.hasPoint(x, y)) {
+            // log('hasPoint true', x, y)
+            // 设置拖拽状态
+            enableDrag = true
+        }
+    })
+
+    canvas.addEventListener('mousemove', function(e) {
+        var x = e.offsetX
+        var y = e.offsetY
+        if (enableDrag) {
+            ball.x = x
+            ball.y = y
+        }
+    })
+
+    canvas.addEventListener('mouseup', function(e) {
+        var x = e.offsetX
+        var y = e.offsetY
+        enableDrag = false
+    })
 }
 
 var __main = function() {
@@ -68,7 +97,7 @@ var __main = function() {
 
         window.score = 0
         game.update = function() {
-            if (paused) {
+            if (window.paused) {
                 return
             }
             ball.move()
@@ -102,9 +131,9 @@ var __main = function() {
             }
             game.context.fillText(`score: ${score}`, 30, 350)
         }
-    })
 
-    enableDebugMode(game, true)
+        enableDebugMode(game, ball, true)
+    })
 }
 
 __main()
