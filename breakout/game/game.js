@@ -105,7 +105,7 @@ var Game = function(fps, images, runCallback) {
     }
 
     g._start = function() {
-        log('star')
+        // log('_start')
         runCallback(g)
     }
 

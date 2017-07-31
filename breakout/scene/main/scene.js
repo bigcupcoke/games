@@ -14,7 +14,6 @@ var Scene = function(game) {
 
     window.blocks = []
     blocks = loadLevel(game, 1)
-
     window.score = 0
     s.update = function() {
         if (window.paused) {
@@ -22,6 +21,10 @@ var Scene = function(game) {
         }
         ball.move()
 
+        if (ball.y >= 400) {
+            var s = SceneEnd(game)
+            game.replaceScene(s)
+        }
         if (paddle.collide(ball)) {
             ball.bound()
         }

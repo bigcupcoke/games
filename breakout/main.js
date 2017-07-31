@@ -52,8 +52,8 @@ var __main = function() {
     }
 
     var game = Game(window.fps, images, function(g) {
-        var s = Scene(g)
-        log(s, 's')
+        var s = SceneBegin(g)
+        // log(s, 's')
         g.runWithScene(s)
     })
 
