@@ -1,21 +1,14 @@
-var SceneEnd = function(game) {
-    var s = {
-        game: game,
-    }
-
-    s.draw = function() {
-        game.context.fillText('GAME OVER', 250, 150)
-    }
-
-    window.addEventListener('keydown', function(e) {
-        if (e.key === 'r') {
-            var s = SceneBegin(game)
+class SceneEnd extends DjScene {
+    constructor(game) {
+        super()
+        this.game = game
+        game.registerAction('r', function() {
+            var s = SceneBegin.create(game)
             game.replaceScene(s)
-        }
-    })
-
-    s.update = function() {
-
+        })
     }
-    return s
+
+    draw() {
+        this.game.context.fillText('GAME OVER', 250, 150)
+    }
 }

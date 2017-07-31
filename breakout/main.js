@@ -52,7 +52,7 @@ var __main = function() {
     }
 
     var game = Game(window.fps, images, function(g) {
-        var s = SceneBegin(g)
+        var s = SceneBegin.create(g)
         // log(s, 's')
         g.runWithScene(s)
     })

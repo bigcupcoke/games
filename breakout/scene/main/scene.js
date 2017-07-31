@@ -1,3 +1,22 @@
+class DjScene{
+    constructor(game) {
+        this.game = game
+    }
+
+    static create(game) {
+        var instance = new this(game)
+        return instance
+    }
+
+    draw() {
+
+    }
+
+    update() {
+
+    }
+}
+
 var Scene = function(game) {
     var s = {
         game: game,
@@ -22,7 +41,7 @@ var Scene = function(game) {
         ball.move()
 
         if (ball.y >= 400) {
-            var s = SceneEnd(game)
+            var s = SceneEnd.create(game)
             game.replaceScene(s)
         }
         if (paddle.collide(ball)) {
@@ -82,6 +101,5 @@ var Scene = function(game) {
         var y = e.offsetY
         enableDrag = false
     })
-
     return s
 }
