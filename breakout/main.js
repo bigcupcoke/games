@@ -81,58 +81,9 @@ var __main = function() {
     }
 
     var game = Game(window.fps, images, function(g) {
-
-        var paddle = Paddle(game)
-
-        window.fps = 50
-
-        game.registerAction('a', paddle.moveLeft)
-        game.registerAction('d', paddle.moveRight)
-
-        var ball = Ball(game)
-        game.registerAction('f', ball.fire)
-
-        window.blocks = []
-        blocks = loadLevel(game, 1)
-
-        window.score = 0
-        game.update = function() {
-            if (window.paused) {
-                return
-            }
-            ball.move()
-
-            if (paddle.collide(ball)) {
-                ball.bound()
-            }
-
-            for (var i = 0; i < blocks.length; i++) {
-                var b = blocks[i]
-                if(b.collide(ball)) {
-                    ball.boundY()
-                    b.kill()
-
-                    //  score +100 when ball ana block collide
-                    window.score += 100
-                }
-            }
-
-        }
-
-        game.draw = function() {
-            game.drawImg(paddle)
-            game.drawImg(ball)
-
-            for (var i = 0; i < blocks.length; i++) {
-                var b = blocks[i]
-                if (b.alive) {
-                    game.drawImg(b)
-                }
-            }
-            game.context.fillText(`score: ${score}`, 30, 350)
-        }
-
-        enableDebugMode(game, ball, true)
+        var s = Scene(g)
+        g.runWithScene(s)
+        enableDebugMode(g, true)
     })
 }
 

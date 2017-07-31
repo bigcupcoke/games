@@ -2,9 +2,8 @@ var Game = function(fps, images, runCallback) {
     var g = {
         actions: {},
         keydowns: {},
-        update: function() {},
-        draw: function() {},
         images: {},
+        scene: null,
     }
 
     var canvas = document.querySelector('#dj-canvas')
@@ -20,6 +19,15 @@ var Game = function(fps, images, runCallback) {
 
     g.clear = function() {
         this.context.clearRect(0, 0, canvas.width, canvas.height)
+    }
+
+    // update
+    g.update = function() {
+        g.scene.update()
+    }
+    // draw
+    g.draw = function() {
+        g.scene.draw()
     }
 
     // change keydowns  state
@@ -47,11 +55,11 @@ var Game = function(fps, images, runCallback) {
             }
         })
 
-        g.update()
+        g.update || g.update()
         // clear
         g.clear()
         //  draw
-        g.draw()
+        g.draw || g.draw()
 
         // log('render success')
         setTimeout(function () {
@@ -71,7 +79,7 @@ var Game = function(fps, images, runCallback) {
             g.images[name] = img
             loads.push(1)
             if (loads.length === names.length) {
-                g.run()
+                g._start()
             }
         }
     })
@@ -86,9 +94,17 @@ var Game = function(fps, images, runCallback) {
         return image
     }
 
-    g.run = function() {
-        runCallback(g)
+    g.runWithScene = function(scene) {
+        g.scene = scene
         renderLoop()
+    }
+
+    g.replaceScene = function(scene) {
+        g.scene = scene
+    }
+
+    g._start = function() {
+        runCallback(g)
     }
 
     return g
