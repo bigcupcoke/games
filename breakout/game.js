@@ -27,6 +27,7 @@ var Game = function(fps, images, runCallback) {
     }
     // draw
     g.draw = function() {
+        log('g.draw')
         g.scene.draw()
     }
 
@@ -55,11 +56,11 @@ var Game = function(fps, images, runCallback) {
             }
         })
 
-        g.update || g.update()
+        g.update()
         // clear
         g.clear()
         //  draw
-        g.draw || g.draw()
+        g.draw()
 
         // log('render success')
         setTimeout(function () {
@@ -104,6 +105,7 @@ var Game = function(fps, images, runCallback) {
     }
 
     g._start = function() {
+        log('star')
         runCallback(g)
     }
 

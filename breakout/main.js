@@ -10,7 +10,7 @@ var loadLevel = function(game, n) {
     return blocks
 }
 
-var enableDebugMode = function(game, ball, enable) {
+var enableDebugMode = function(game, enable) {
     if (!enable) {
         return
     }
@@ -42,35 +42,6 @@ var enableDebugMode = function(game, ball, enable) {
     input.addEventListener('input', function(e) {
         window.fps = this.value
     })
-
-    // mouse event
-    var enableDrag = false
-    var canvas = game.canvas
-    canvas.addEventListener('mousedown', function(e) {
-        var x = e.offsetX
-        var y = e.offsetY
-        // log('down', x, y)
-        if (ball.hasPoint(x, y)) {
-            // log('hasPoint true', x, y)
-            // 设置拖拽状态
-            enableDrag = true
-        }
-    })
-
-    canvas.addEventListener('mousemove', function(e) {
-        var x = e.offsetX
-        var y = e.offsetY
-        if (enableDrag) {
-            ball.x = x
-            ball.y = y
-        }
-    })
-
-    canvas.addEventListener('mouseup', function(e) {
-        var x = e.offsetX
-        var y = e.offsetY
-        enableDrag = false
-    })
 }
 
 var __main = function() {
@@ -82,9 +53,11 @@ var __main = function() {
 
     var game = Game(window.fps, images, function(g) {
         var s = Scene(g)
+        log(s, 's')
         g.runWithScene(s)
-        enableDebugMode(g, true)
     })
+
+    enableDebugMode(game, true)
 }
 
 __main()

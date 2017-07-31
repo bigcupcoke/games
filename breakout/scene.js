@@ -36,7 +36,6 @@ var Scene = function(game) {
                 window.score += 100
             }
         }
-
     }
 
     s.draw = function() {
@@ -51,6 +50,35 @@ var Scene = function(game) {
         }
         game.context.fillText(`score: ${score}`, 30, 350)
     }
+
+    // mouse event
+    var enableDrag = false
+    var canvas = game.canvas
+    canvas.addEventListener('mousedown', function(e) {
+        var x = e.offsetX
+        var y = e.offsetY
+        // log('down', x, y)
+        if (ball.hasPoint(x, y)) {
+            // log('hasPoint true', x, y)
+            // 设置拖拽状态
+            enableDrag = true
+        }
+    })
+
+    canvas.addEventListener('mousemove', function(e) {
+        var x = e.offsetX
+        var y = e.offsetY
+        if (enableDrag) {
+            ball.x = x
+            ball.y = y
+        }
+    })
+
+    canvas.addEventListener('mouseup', function(e) {
+        var x = e.offsetX
+        var y = e.offsetY
+        enableDrag = false
+    })
 
     return s
 }
