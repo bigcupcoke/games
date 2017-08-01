@@ -1,6 +1,7 @@
 class DjScene{
     constructor(game) {
         this.game = game
+        this.elements = []
     }
 
     static create(game) {
@@ -8,8 +9,17 @@ class DjScene{
         return instance
     }
 
-    draw() {
+    addElements(img) {
+        this.elements.push(img)
+    }
 
+    draw() {
+        var es = this.elements
+        // log(es, 'es')
+        var g = this.game
+        es.forEach((e) => {
+            g.drawImg(e)
+        })
     }
 
     update() {
@@ -19,16 +29,22 @@ class DjScene{
 
 class Scene extends DjScene {
     constructor(game) {
-        super()
-        this.game = game
-        this.bg = GameImage.create(game, 'background')
+        super(game)
         // this.init()
+        this.setUp()
     }
 
-    registerAction() {
-        this.game.registerAction('a', this.paddle.moveLeft)
-        this.game.registerAction('d', this.paddle.moveRight)
-        this.game.registerAction('f', this.ball.fire)
+    setUp() {
+        // log(this.game, 'game this')
+        this.bg = GameImage.create(this.game, 'background')
+        this.player = GameImage.create(this.game, 'player')
+        this.cloud = GameImage.create(this.game, 'cloud')
+        // this.game.registerAction('a', this.paddle.moveLeft)
+        // this.game.registerAction('d', this.paddle.moveRight)
+        // this.game.registerAction('f', this.ball.fire)
+        this.addElements(this.bg)
+        this.addElements(this.player)
+        this.addElements(this.cloud)
     }
 
     init() {
@@ -45,6 +61,7 @@ class Scene extends DjScene {
     }
 
     update() {
+        this.cloud.y ++
         // if (window.paused) {
         //     return
         // }
@@ -73,20 +90,21 @@ class Scene extends DjScene {
         // }
     }
 
-    draw() {
-        var g = this.game
-        g.drawImg(this.bg)
-        // g.drawImg(this.ball)
-
-        // for (var i = 0; i < window.blocks.length; i++) {
-        //     log('blocks', blocks)
-        //     var b = window.blocks[i]
-        //     if (b.alive) {
-        //         g.drawImg(b)
-        //     }
-        // }
-        // g.context.fillText(`score: ${score}`, 30, 350)
-    }
+    // draw() {
+    //     var g = this.game
+    //     g.drawImg(this.bg)
+    //     g.drawImg(this.player)
+    //     // g.drawImg(this.ball)
+    //
+    //     // for (var i = 0; i < window.blocks.length; i++) {
+    //     //     log('blocks', blocks)
+    //     //     var b = window.blocks[i]
+    //     //     if (b.alive) {
+    //     //         g.drawImg(b)
+    //     //     }
+    //     // }
+    //     // g.context.fillText(`score: ${score}`, 30, 350)
+    // }
 
     mouseEvent() {
         var g = this
@@ -118,4 +136,50 @@ class Scene extends DjScene {
             g.enableDrag = false
        })
     }
+}
+
+var Paddle = function(game) {
+    // var img = imageFromPath('paddle.png')
+    // log('img', img)
+    var o = {
+        img: img,
+        x: 100,
+        y: 390,
+        speed: 5,
+        leftDown: false,
+        rightDown: false,
+    }
+    var img = game.imageByName('paddle')
+    o.img = img.image
+    o.w = img.w
+    o.h = img.h
+    o.move = function(x) {
+        if(x < 0) {
+            x = 0
+        } else if (x > 500 - o.img.width) {
+            x = 500 - o.img.width
+        }
+        o.x = x
+    }
+
+    o.moveLeft = function() {
+        o.move(o.x - o.speed)
+    }
+
+    o.moveRight = function() {
+        o.move(o.x + o.speed)
+    }
+
+    o.collide = function(ball) {
+        var result = false
+        if (ball.y + ball.img.height > o.y) {
+            if (ball.x > o.x && ball.x < o.x + o.img.width) {
+                log('相撞')
+                result = true
+            }
+        }
+        return result
+    }
+
+    return o
 }

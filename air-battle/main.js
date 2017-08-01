@@ -47,8 +47,8 @@ var enableDebugMode = function(game, enable) {
 var __main = function() {
     var images = {
         bullet: 'img/ball.png',
-        block: 'img/block.png',
-        paddle: 'img/paddle.png',
+        cloud: 'img/block.png',
+        player: 'img/paddle.png',
         begin: 'img/begin.jpg',
         background: 'img/bg.jpg',
     }

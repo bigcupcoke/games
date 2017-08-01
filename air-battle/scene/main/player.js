@@ -1,4 +1,4 @@
-var Paddle = function(game) {
+class Player {
     // var img = imageFromPath('paddle.png')
     // log('img', img)
     var o = {
