@@ -43,7 +43,7 @@ class Game {
 
     // draw
     draw() {
-        log('g.draw')
+        // log('g.draw')
         this.scene.draw()
     }
 

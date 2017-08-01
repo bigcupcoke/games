@@ -3,7 +3,7 @@ class SceneBegin extends DjScene {
         super()
         this.game = game
         game.registerAction('k', function() {
-            var s = Scene(game)
+            var s = Scene.create(game)
             game.replaceScene(s)
         })
     }
