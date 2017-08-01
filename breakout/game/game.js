@@ -1,54 +1,63 @@
-var Game = function(fps, images, runCallback) {
-    var g = {
-        actions: {},
-        keydowns: {},
-        images: {},
-        scene: null,
+class Game {
+    constructor(fps, images, runCallback) {
+        window.fps = fps
+        this.images = images
+        this.runCallback = runCallback
+
+        this.scene = null
+        this.actions = {}
+        this.keydowns = {}
+        this.canvas = document.querySelector('#dj-canvas')
+        this.context = this.canvas.getContext('2d')
+
+        // change keydowns  state
+        var self = this
+        window.addEventListener('keydown', function(e) {
+            self.keydowns[e.key] = true
+        })
+        window.addEventListener('keyup', function(e) {
+            self.keydowns[e.key] = false
+        })
+
+        this.init()
     }
 
-    var canvas = document.querySelector('#dj-canvas')
-    var context = canvas.getContext('2d')
+    static instance(...args) {
+        this.i = this.i || new this(...args)
+        return this.i
+    }
 
-    g.canvas = canvas
-    g.context = context
-
-    g.drawImg = function(o) {
+    drawImg(o) {
         // log('o', this)
-        g.context.drawImage(o.img, o.x, o.y)
+        this.context.drawImage(o.img, o.x, o.y)
     }
 
-    g.clear = function() {
-        this.context.clearRect(0, 0, canvas.width, canvas.height)
+    clear() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     }
 
     // update
-    g.update = function() {
-        g.scene.update()
-    }
-    // draw
-    g.draw = function() {
-        log('g.draw')
-        g.scene.draw()
+    update() {
+        this.scene.update()
     }
 
-    // change keydowns  state
-    window.addEventListener('keydown', function(e) {
-        g.keydowns[e.key] = true
-    })
-    window.addEventListener('keyup', function(e) {
-        g.keydowns[e.key] = false
-    })
+    // draw
+    draw() {
+        log('g.draw')
+        this.scene.draw()
+    }
 
     //  registerAction
-    g.registerAction = function(key, callback) {
-        g.actions[key] = callback
+    registerAction(key, callback) {
+        this.actions[key] = callback
         // log('cb', callback)
     }
 
     // loop render
     //  timeout 递归调用
-    var renderLoop = function(fps) {
+    renderLoop(fps) {
         //  timer
+        var g = this
         var actions = Object.keys(g.actions)
         actions.forEach(function(key) {
             if (g.keydowns[key]) {
@@ -63,29 +72,15 @@ var Game = function(fps, images, runCallback) {
         g.draw()
 
         // log('render success')
+
         setTimeout(function () {
             // log('fps', window.fps)
-            renderLoop()
+            g.renderLoop()
         }, 1000 / window.fps)
     }
 
-    var loads = []
-    var names = Object.keys(images)
-    names.forEach(function(name, i) {
-        var path = images[name]
-        let img = new Image()
-        img.src = path
-        img.onload = function() {
-            // 存入 g.images 中
-            g.images[name] = img
-            loads.push(1)
-            if (loads.length === names.length) {
-                g._start()
-            }
-        }
-    })
-
-    g.imageByName = function(name) {
+    imageByName(name) {
+        var g = this
         var img = g.images[name]
         var image = {
             w: img.width,
@@ -95,19 +90,37 @@ var Game = function(fps, images, runCallback) {
         return image
     }
 
-    g.runWithScene = function(scene) {
+    runWithScene(scene) {
+        var g = this
         g.scene = scene
-        renderLoop()
+        g.renderLoop()
     }
 
-    g.replaceScene = function(scene) {
-        g.scene = scene
+    replaceScene(scene) {
+        this.scene = scene
     }
 
-    g._start = function() {
+    _start() {
         // log('_start')
-        runCallback(g)
+        this.runCallback(this)
     }
 
-    return g
+    init() {
+        var g = this
+        var loads = []
+        var names = Object.keys(g.images)
+        names.forEach(function(name, i) {
+            var path = g.images[name]
+            let img = new Image()
+            img.src = path
+            img.onload = function() {
+                // 存入 g.images 中
+                g.images[name] = img
+                loads.push(1)
+                if (loads.length === names.length) {
+                    g._start()
+                }
+            }
+        })
+    }
 }

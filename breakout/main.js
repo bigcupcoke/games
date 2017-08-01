@@ -51,7 +51,7 @@ var __main = function() {
         paddle: 'img/paddle.png',
     }
 
-    var game = Game(window.fps, images, function(g) {
+    var game = Game.instance(window.fps, images, function(g) {
         var s = SceneBegin.create(g)
         // log(s, 's')
         g.runWithScene(s)
