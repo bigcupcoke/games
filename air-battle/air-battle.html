@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>breakout</title>
+        <style media="screen">
+            body {
+                background-color: darkslategrey;
+            }
+            textarea{
+                    background-color: darkslategrey;
+            }
+            canvas {
+                border: 1px solid gray;
+            }
+            input {
+                visibility: hidden;
+            }
+            .active {
+                visibility: visible;
+            }
+        </style>
+        <!-- game 相关 -->
+        <script src="game/utils.js" charset="utf-8"></script>
+        <script src="game/game.js" charset="utf-8"></script>
+        <script src="game/image.js" charset="utf-8"></script>
+        <!-- main scene 相关 -->
+        <script src="scene/main/paddle.js" charset="utf-8"></script>
+        <script src="scene/main/ball.js" charset="utf-8"></script>
+        <script src="scene/main/block.js" charset="utf-8"></script>
+        <script src="scene/main/scene.js" charset="utf-8"></script>
+        <!-- end & begin scene  -->
+        <script src="scene/begin/scene_begin.js" charset="utf-8"></script>
+        <script src="scene/end/scene_end.js" charset="utf-8"></script>
+        <!--  level 相关-->
+        <script src="level.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <canvas id="dj-canvas" width="500" height="400"></canvas>
+        <input type="range" id="id-input-fps" value="">
+        <textarea id="id-text-log" rows="13" cols="65"></textarea>
+        <script src="main.js" charset="utf-8"></script>
+    </body>
+</html>
