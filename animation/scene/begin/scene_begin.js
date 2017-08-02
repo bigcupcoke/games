@@ -23,17 +23,35 @@ class SceneBegin extends DjScene {
     constructor(game) {
         super()
         this.game = game
-        game.registerAction('k', function() {
-            var s = Scene.create(game)
-            game.replaceScene(s)
-        })
+
+
 
         var label = Label.create(game, 'hello')
         this.addElements(label)
 
-        var ps = ParticleSystem.create(this.game)
-        this.addElements(ps)
-        log('ps', this.elements)
+        var w = Animation.create(game)
+
+        this.w = w
+        w.x = 100
+        w.y = 100
+        this.addElements(w)
+
+        this.setInputs()
+    }
+
+    setInputs() {
+        var self = this
+        self.game.registerAction('k', function(g) {
+            var s = Scene.create(g)
+            game.replaceScene(s)
+        })
+
+        self.game.registerAction('a', function(g) {
+            self.w.move(-2)
+        })
+        self.game.registerAction('d', function(g) {
+            self.w.move(2)
+        })
     }
     //
     // update() {

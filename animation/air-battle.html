@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>breakout</title>
+        <style media="screen">
+            body {
+                background-color: darkslategrey;
+            }
+            textarea{
+                    background-color: darkslategrey;
+            }
+            canvas {
+                border: 1px solid gray;
+            }
+            input {
+                /*visibility: hidden;*/
+            }
+            .active {
+                visibility: visible;
+            }
+        </style>
+        <!-- game 相关 -->
+        <script src="game/utils.js" charset="utf-8"></script>
+        <script src="game/game.js" charset="utf-8"></script>
+        <script src="game/image.js" charset="utf-8"></script> 
+        <script src="game/particle_system.js" charset="utf-8"></script>
+        <script src="game/animation.js" charset="utf-8"></script>
+        <!-- main scene 相关 -->
+        <script src="scene/main/paddle.js" charset="utf-8"></script>
+        <script src="scene/main/ball.js" charset="utf-8"></script>
+        <script src="scene/main/block.js" charset="utf-8"></script>
+        <script src="scene/main/scene.js" charset="utf-8"></script>
+        <!-- end & begin scene  -->
+        <script src="scene/begin/scene_begin.js" charset="utf-8"></script>
+        <script src="scene/end/scene_end.js" charset="utf-8"></script>
+        <!--  level 相关-->
+        <script src="level.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <canvas id="dj-canvas" width="300" height="400"></canvas>
+        <input type="range" id="id-input-fps" value="">
+        <div class="">
+            <label for="">
+                <input type="range" class="input-player-speed"
+                value=""
+                min=0
+                max=10
+                data-value="config.player_speed"
+                >
+                player速度: <span class="speed-label"></span>
+            </label>
+
+        </div>
+        <div class="">
+            <label for="">
+                <input type="range" class="input-player-speed"
+                value=""
+                min=0
+                max=10
+                data-value="config.bullet_speed"
+                >
+                子弹速度: <span class="speed-label"></span>
+            </label>
+
+        </div>
+        <div class="">
+            <label for="">
+                <input type="range" class="input-player-speed"
+                value=""
+                min=0
+                max=10
+                data-value="config.fire_cooldown"
+                >
+                子弹cd时间: <span class="speed-label"></span>
+            </label>
+
+        </div>
+        <div class="">
+            <label for="">
+                <input type="range" class="input-player-speed"
+                value=""
+                min=-10
+                max=10
+                data-value="config.cloud_speed"
+                >
+                云朵速度: <span class="speed-label"></span>
+            </label>
+
+        </div>
+        <div class="">
+            <label for="">
+                <input type="range" class="input-player-speed"
+                value=""
+                min=0
+                max=10
+                data-value="config.enemies_speed"
+                >
+                敌人速度: <span class="speed-label"></span>
+            </label>
+
+        </div>
+        <!-- <textarea id="id-text-log" rows="13" cols="65"></textarea> -->
+        <script src="main.js" charset="utf-8"></script>
+        <script type="text/javascript">
+            var es = (sel) => document.querySelectorAll(sel)
+
+            var bindAll = function(sel, eventName, callback) {
+                var ls = es(sel)
+                for (var i = 0; i < ls.length; i++) {
+                    var e = ls[i]
+                    e.addEventListener(eventName, function(event) {
+                        callback(event)
+                    })
+                }
+            }
+
+            bindAll('.input-player-speed', 'input', function(event) {
+                var self = event.target
+                var valconfig = self.dataset.value
+                var valNow = self.value
+
+                eval(valconfig + '=' + valNow)
+                // config[valconfig] = valNow
+                var label = self.closest('label').querySelector('.speed-label')
+                log(label, valNow)
+                label.innerText = valNow
+            })
+         </script>
+    </body>
+</html>
