@@ -5,7 +5,7 @@ class GameImage {
         this.x = 0
         this.y = 0
         this.w = this.texture.width
-        this.w = this.texture.height
+        this.h = this.texture.height
     }
 
     static create(game, name) {
@@ -14,7 +14,7 @@ class GameImage {
     }
 
     draw() {
-
+        this.game.drawImg(this)
     }
 
     update() {

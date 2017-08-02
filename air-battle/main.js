@@ -56,10 +56,11 @@ var __main = function() {
         enemy2: 'img/block.png',
         enemy3: 'img/block.png',
         enemy4: 'img/block.png',
+        fire: 'img/ball.png',
     }
 
     var game = Game.instance(window.fps, images, function(g) {
-        var s = Scene.create(g)
+        var s = SceneBegin.create(g)
         // log(s, 's')
         g.runWithScene(s)
     })
