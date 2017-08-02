@@ -22,6 +22,30 @@ class GameImage {
     }
 }
 
+//  player 是图片， 应该去继承 image 里面东西
+class Player extends GameImage {
+    constructor(game) {
+        super(game, 'player')
+        this.speed = 5
+    }
+
+    moveLeft() {
+        this.x -= this.speed
+    }
+
+    moveRight() {
+        this.x += this.speed
+    }
+
+    moveUp() {
+        this.y -= this.speed
+    }
+
+    moveDown() {
+        this.y += this.speed
+    }
+}
+
 //
 // class Player extends GameImage {
 //     constructor(game, name) {

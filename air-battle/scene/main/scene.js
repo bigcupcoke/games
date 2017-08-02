@@ -32,19 +32,29 @@ class Scene extends DjScene {
         super(game)
         // this.init()
         this.setUp()
+        this.setInputs()
     }
 
     setUp() {
         // log(this.game, 'game this')
         this.bg = GameImage.create(this.game, 'background')
-        this.player = GameImage.create(this.game, 'player')
+        this.player = Player.create(this.game)
         this.cloud = GameImage.create(this.game, 'cloud')
-        // this.game.registerAction('a', this.paddle.moveLeft)
-        // this.game.registerAction('d', this.paddle.moveRight)
-        // this.game.registerAction('f', this.ball.fire)
+
         this.addElements(this.bg)
         this.addElements(this.player)
         this.addElements(this.cloud)
+    }
+
+    setInputs() {
+        var s = this
+        this.game.registerAction('a', function() {
+            s.player.moveLeft()
+        })
+        this.game.registerAction('d', s.player.moveRight)
+        this.game.registerAction('w', s.player.moveUp)
+        this.game.registerAction('s', s.player.movDown)
+        // this.game.registerAction('f', this.ball.fire)
     }
 
     init() {
