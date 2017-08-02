@@ -1,7 +1,19 @@
+const config = {
+    player_speed: 10,
+    bullet_speed: 5,
+    cloud_speed: 5,
+    enemies_speed: 5,
+    fire_cooldown: 5,
+}
+
+
 class DjScene{
     constructor(game) {
         this.game = game
         this.elements = []
+
+        //  set debug mode
+        this.debugModeEnabled = true
     }
 
     static create(game) {
@@ -10,6 +22,7 @@ class DjScene{
     }
 
     addElements(img) {
+        img.scene = this
         this.elements.push(img)
     }
 
@@ -24,6 +37,14 @@ class DjScene{
 
     update() {
         var es = this.elements
+
+        //  debug mode
+        if (this.debugModeEnabled) {
+            es.forEach((e) => {
+                //  if e.dug exist, then run e.debug
+                e.debug && e.debug()
+            })
+        }
         // log(es, 'es')
         var g = this.game
         es.forEach((e) => {
@@ -44,7 +65,7 @@ class Scene extends DjScene {
         // log(this.game, 'game this')
         this.bg = GameImage.create(this.game, 'background')
         this.player = Player.create(this.game)
-        this.cloud = GameImage.create(this.game, 'cloud')
+        this.cloud = Cloud.create(this.game)
 
         this.addElements(this.bg)
         this.addElements(this.player)
@@ -79,6 +100,9 @@ class Scene extends DjScene {
         this.game.registerAction('s', function() {
             s.player.moveDown()
         })
+        this.game.registerAction('f', function() {
+            s.player.fire()
+        })
 
         // this.game.registerAction('f', this.ball.fire)
     }
@@ -99,49 +123,7 @@ class Scene extends DjScene {
     update() {
         super.update()
         this.cloud.y ++
-        // if (window.paused) {
-        //     return
-        // }
-        //
-        // var b = this.ball
-        // b.move()
-        // if (b.y >= 400) {
-        //     var s = SceneEnd.create(this.game)
-        //     this.game.replaceScene(s)
-        // }
-        //
-        // var p = this.paddle
-        // if (p.collide(b)) {
-        //     b.bound()
-        // }
-        //
-        // for (var i = 0; i < window.blocks.length; i++) {
-        //     log('blocks',  window.blocks)
-        //     var blocks = window.blocks[i]
-        //     if(blocks.collide(b)) {
-        //         b.boundY()
-        //         block.kill()
-        //         //  score +100 when ball ana block collide
-        //         window.score += 100
-        //     }
-        // }
     }
-
-    // draw() {
-    //     var g = this.game
-    //     g.drawImg(this.bg)
-    //     g.drawImg(this.player)
-    //     // g.drawImg(this.ball)
-    //
-    //     // for (var i = 0; i < window.blocks.length; i++) {
-    //     //     log('blocks', blocks)
-    //     //     var b = window.blocks[i]
-    //     //     if (b.alive) {
-    //     //         g.drawImg(b)
-    //     //     }
-    //     // }
-    //     // g.context.fillText(`score: ${score}`, 30, 350)
-    // }
 
     mouseEvent() {
         var g = this
