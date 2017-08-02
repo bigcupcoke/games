@@ -51,6 +51,11 @@ var __main = function() {
         player: 'img/paddle.png',
         begin: 'img/begin.jpg',
         background: 'img/bg.jpg',
+        enemy0: 'img/block.png',
+        enemy1: 'img/block.png',
+        enemy2: 'img/block.png',
+        enemy3: 'img/block.png',
+        enemy4: 'img/block.png',
     }
 
     var game = Game.instance(window.fps, images, function(g) {

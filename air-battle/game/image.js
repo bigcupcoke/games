@@ -27,6 +27,7 @@ class Player extends GameImage {
     constructor(game) {
         super(game, 'player')
         this.speed = 5
+        this.x = 0
     }
 
     moveLeft() {
@@ -43,6 +44,34 @@ class Player extends GameImage {
 
     moveDown() {
         this.y += this.speed
+    }
+}
+
+const randomBetween = function(start, end) {
+    var n = Math.random() * (end - start + 1)
+    return Math.floor(n)
+}
+
+//  eneey 是图片， 应该去继承 image 里面东西
+class Enemy extends GameImage {
+    constructor(game) {
+        var type = randomBetween(0, 4)
+        var name = 'enemy' + type
+        super(game, name)
+        this.setUp()
+    }
+
+    setUp() {
+        this.speed = randomBetween(2, 5)
+        this.x = randomBetween(0, 250)
+        this.y = -randomBetween(0, 100)
+    }
+
+    update() {
+        this.y += this.speed
+        if (this.y > 400) {
+            this.setUp()
+        }
     }
 }
 

@@ -59,8 +59,10 @@ class Game {
         //  timer
         var g = this
         var actions = Object.keys(g.actions)
+        // log(actions, 'actions')
         actions.forEach(function(key) {
             if (g.keydowns[key]) {
+                // log('actions key', g.actions[key])
                 g.actions[key]()
             }
         })

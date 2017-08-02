@@ -23,7 +23,12 @@ class DjScene{
     }
 
     update() {
-
+        var es = this.elements
+        // log(es, 'es')
+        var g = this.game
+        es.forEach((e) => {
+            e.update()
+        })
     }
 }
 
@@ -44,6 +49,20 @@ class Scene extends DjScene {
         this.addElements(this.bg)
         this.addElements(this.player)
         this.addElements(this.cloud)
+
+        //  addEnemies
+        this.countsOfEnemies = 10
+        this.addEnemies()
+    }
+
+    addEnemies() {
+        var es = []
+        for (var i = 0; i < this.countsOfEnemies; i++) {
+            var e = Enemy.create(this.game)
+            es.push(e)
+            this.addElements(e)
+        }
+        this.enemies = es
     }
 
     setInputs() {
@@ -51,9 +70,16 @@ class Scene extends DjScene {
         this.game.registerAction('a', function() {
             s.player.moveLeft()
         })
-        this.game.registerAction('d', s.player.moveRight)
-        this.game.registerAction('w', s.player.moveUp)
-        this.game.registerAction('s', s.player.movDown)
+        this.game.registerAction('d', function() {
+            s.player.moveRight()
+        })
+        this.game.registerAction('w', function() {
+            s.player.moveUp()
+        })
+        this.game.registerAction('s', function() {
+            s.player.moveDown()
+        })
+
         // this.game.registerAction('f', this.ball.fire)
     }
 
@@ -71,6 +97,7 @@ class Scene extends DjScene {
     }
 
     update() {
+        super.update()
         this.cloud.y ++
         // if (window.paused) {
         //     return
