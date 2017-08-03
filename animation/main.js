@@ -57,7 +57,7 @@ var __main = function() {
         enemy3: 'img/block.png',
         enemy4: 'img/block.png',
         fire: 'img/ball.png',
-        //
+        // idle 状态
         w0: 'img/ball.png',
         w1: 'img/paddle.png',
         w2: 'img/block.png',
@@ -68,6 +68,21 @@ var __main = function() {
         w7: 'img/paddle.png',
         w8: 'img/ball.png',
         w9: 'img/block.png',
+
+
+        // run 状态
+        run0: 'img/enemy0.png',
+        run1: 'img/enemy1.png',
+        run2: 'img/enemy2.png',
+        run3: 'img/enemy0.png',
+        run4: 'img/enemy1.png',
+        run5: 'img/enemy2.png',
+        run6: 'img/enemy0.png',
+        run7: 'img/enemy1.png',
+        run8: 'img/enemy2.png',
+        run9: 'img/enemy0.png',
+        //  多状态动画
+
     }
 
     var game = Game.instance(window.fps, images, function(g) {

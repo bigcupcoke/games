@@ -46,11 +46,12 @@ class SceneBegin extends DjScene {
             game.replaceScene(s)
         })
 
-        self.game.registerAction('a', function(g) {
-            self.w.move(-2)
+        self.game.registerAction('a', function(keyStatus) {
+            self.w.move(-2, keyStatus)
         })
-        self.game.registerAction('d', function(g) {
-            self.w.move(2)
+
+        self.game.registerAction('d', function(keyStatus) {
+            self.w.move(2, keyStatus)
         })
     }
     //

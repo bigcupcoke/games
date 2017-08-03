@@ -13,10 +13,10 @@ class Game {
         // change keydowns  state
         var self = this
         window.addEventListener('keydown', function(e) {
-            self.keydowns[e.key] = true
+            self.keydowns[e.key] = 'down'
         })
         window.addEventListener('keyup', function(e) {
-            self.keydowns[e.key] = false
+            self.keydowns[e.key] = 'up'
         })
 
         this.init()
@@ -61,9 +61,14 @@ class Game {
         var actions = Object.keys(g.actions)
         // log(actions, 'actions')
         actions.forEach(function(key) {
-            if (g.keydowns[key]) {
+            var status = g.keydowns[key]
+            if (status === 'down') {
                 // log('actions key', g.actions[key])
-                g.actions[key]()
+                g.actions[key]('down')
+            } else if (status === 'up') {
+                g.actions[key]('up')
+                //  clear key in keydowns
+                g.keydowns[key] = null
             }
         })
 
