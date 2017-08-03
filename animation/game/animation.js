@@ -24,8 +24,13 @@ class Animation {
         this.statusName = 'idle'
 
         this.texture = this.frames()[0]
+        this.w = this.texture.width
+        this.w = this.texture.height
         this.frameIndex = 0
         this.frameCount = 3
+
+        //  水平饭抓标志
+        this.filpX = false
     }
 
     static create(game) {
@@ -45,12 +50,12 @@ class Animation {
     }
 
     move(offset, keyStatus) {
+        this.filpX = (offset < 0)
         this.x += offset
         var  statusNames = {
             down: 'idle',
             up: 'run',
         }
-        log('keyStatus', keyStatus)
         var name = statusNames[keyStatus]
         this.changeSituation(name)
     }
@@ -60,6 +65,18 @@ class Animation {
     }
 
     draw() {
-        this.game.drawImg(this)
+        var context = this.game.context
+        if (this.filpX) {
+            context.save()
+
+            var x = this.x + this.w / 2
+            context.translate(x, 0)
+            context.scale(-1, 1)
+            context.translate(-x, 0)
+            context.drawImage(this.texture, this.x, this.y)
+            context.restore()
+        } else {
+             context.drawImage(this.texture, this.x, this.y)
+        }
     }
 }
