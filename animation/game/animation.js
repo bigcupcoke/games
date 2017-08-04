@@ -68,7 +68,6 @@ class Animation {
         var context = this.game.context
         if (this.filpX) {
             context.save()
-
             var x = this.x + this.w / 2
             context.translate(x, 0)
             context.scale(-1, 1)
