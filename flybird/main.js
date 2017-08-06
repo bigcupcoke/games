@@ -53,7 +53,7 @@ var __main = function() {
         bird1: 'img/bird1.png',
 
         banner: 'img/banner.jpg',
-        // bird1: 'img/down_bird0.png',
+        pipe: 'img/pipe.png'
     }
 
     var game = Game.instance(window.fps, images, function(g) {

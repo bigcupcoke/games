@@ -39,6 +39,8 @@ class Animation {
         //  重力加速度
         this.gy = 10
         this.factor = 0.05
+
+        this.rotation = 45
     }
 
     static create(game) {
@@ -51,6 +53,7 @@ class Animation {
 
     jump(v) {
         this.vy = v
+        this.rotation = -45
     }
 
 
@@ -68,6 +71,10 @@ class Animation {
         var h = 400
         if (this.y > h) {
             this.y = h
+        }
+
+        if (this.rotation < 45) {
+            this.rotation += 5
         }
     }
 
@@ -88,16 +95,17 @@ class Animation {
 
     draw() {
         var context = this.game.context
-        if (this.filpX) {
-            context.save()
-            var x = this.x + this.w / 2
-            context.translate(x, 0)
-            context.scale(-1, 1)
-            context.translate(-x, 0)
-            context.drawImage(this.texture, this.x, this.y)
-            context.restore()
-        } else {
-             context.drawImage(this.texture, this.x, this.y)
-        }
+        context.save()
+        var w2 = this.w / 2
+        var h2 = this.h / 2
+        // log(this.x, this.y, w2, h2)
+        context.translate(this.x + w2, this.y + h2)
+        // if (this.filpX) {
+        //     context.scale(-1, 1)
+        // }
+        context.rotate(this.rotation * Math.PI / 180)
+        context.translate(-w2, -h2)
+        context.drawImage(this.texture, 0, 0)
+        context.restore()
     }
 }

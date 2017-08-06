@@ -19,6 +19,70 @@ class Label {
     }
 }
 
+class Pipes {
+    constructor(game) {
+        this.game = game
+        this.pipes = []
+
+        this.spaceY = 150
+        this.spaceX = 150
+        this.columsOfPipes = 3
+        for (var i = 0; i < this.columsOfPipes; i++) {
+            var p1 = GameImage.create(game, 'pipe')
+            p1.filpY = true
+            p1.x = 500 + i * this.spaceX
+
+            var p2 = GameImage.create(game, 'pipe')
+            p2.x = p1.x
+            this.resetPipesPostion(p1, p2)
+            this.pipes.push(p1)
+            this.pipes.push(p2)
+        }
+    }
+
+    static create(game) {
+        return new this(game)
+    }
+
+    resetPipesPostion(p1, p2) {
+        p1.y = randomBetween(-200, 0)
+        p2.y = p1.y + p2.h + this.spaceY
+        log('p1, p2', p1.y, p2.y)
+    }
+
+    update() {
+        var t = this
+        for (var p of this.pipes) {
+            p.x -= 1
+            if (p.x < -100) {
+                p.x = t.spaceX * t.columsOfPipes
+            }
+        }
+    }
+
+    draw() {
+        var context = this.game.context
+        this.pipes.forEach((p) => {
+            context.save()
+            var w2 = p.w / 2
+            var h2 = p.h / 2
+            // log(p.x, p.y, w2, h2)
+            context.translate(p.x + w2, p.y + h2)
+
+            var scaleX = p.filpY ? -1 : 1
+            var scaleY = p.filpY ? -1 : 1
+            // log(scaleX, scaleY)
+            context.scale(scaleX, scaleY)
+
+            context.rotate(p.rotation * Math.PI / 180)
+            context.translate(-w2, -h2)
+            context.drawImage(p.texture, 0, 0)
+            context.restore()
+
+        })
+    }
+}
+
 class SceneBegin extends DjScene {
     constructor(game) {
         super()
@@ -33,6 +97,17 @@ class SceneBegin extends DjScene {
         this.addElements(bg)
 
 
+
+        var bird = Animation.create(game)
+        this.bird = bird
+        bird.x = 100
+        bird.y = 100
+        this.addElements(bird)
+        this.setInputs()
+
+        this.pipe = Pipes.create(game)
+        this.addElements(this.pipe)
+
         this.grounds = []
         for (var i = 0; i < 3; i++) {
             var g = GameImage.create(game, 'banner')
@@ -43,13 +118,6 @@ class SceneBegin extends DjScene {
             this.grounds.push(g)
         }
         this.g = g
-
-        var bird = Animation.create(game)
-        this.bird = bird
-        bird.x = 100
-        bird.y = 100
-        this.addElements(bird)
-        this.setInputs()
     }
 
     setInputs() {

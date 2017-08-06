@@ -6,6 +6,8 @@ class GameImage {
         this.y = 0
         this.w = this.texture.width
         this.h = this.texture.height
+        this.filpY = false
+        this.rotation = 0
     }
 
     static create(game, name) {
