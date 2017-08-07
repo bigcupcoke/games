@@ -38,7 +38,7 @@ class Animation {
         this.vy = 1
         //  重力加速度
         this.gy = 10
-        this.factor = 0.05
+        this.factor = 0.025
 
         this.rotation = 45
     }
@@ -56,6 +56,21 @@ class Animation {
         this.rotation = -45
     }
 
+
+    rectIntersects(a, b) {
+        var o = a
+        if (b.y > o.y && b.y < o.y + o.h) {
+            if (b.x > o.x && b.x < o.x + o.w) {
+                return true
+            }
+        }
+        return false
+    }
+
+    collide(b) {
+        var o = this
+        return  (o.rectIntersects(o, b) || o.rectIntersects(b, o))
+    }
 
     update() {
         this.frameCount--

@@ -51,9 +51,12 @@ var __main = function() {
         bg: 'img/bg.jpg',
         bird0: 'img/bird0.png',
         bird1: 'img/bird1.png',
+        // bird2: 'img/bird2.png',
 
         banner: 'img/banner.jpg',
-        pipe: 'img/pipe.png'
+        pipe: 'img/pipe.png',
+        earth: 'img/earth.png',
+        gameover: 'img/game_over.jpg',
     }
 
     var game = Game.instance(window.fps, images, function(g) {

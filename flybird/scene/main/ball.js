@@ -47,6 +47,6 @@ var Ball = function(game) {
         var yIn = y >= o.y && y <= o.y + o.h
         return xIn && yIn
     }
-    
+
     return o
 }

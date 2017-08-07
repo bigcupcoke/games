@@ -25,7 +25,7 @@ class Pipes {
         this.pipes = []
 
         this.spaceY = 150
-        this.spaceX = 150
+        this.spaceX = 180
         this.columsOfPipes = 3
         for (var i = 0; i < this.columsOfPipes; i++) {
             var p1 = GameImage.create(game, 'pipe')
@@ -45,7 +45,7 @@ class Pipes {
     }
 
     resetPipesPostion(p1, p2) {
-        p1.y = randomBetween(-200, 0)
+        p1.y = randomBetween(-400, -200)
         p2.y = p1.y + p2.h + this.spaceY
         log('p1, p2', p1.y, p2.y)
     }
@@ -53,8 +53,8 @@ class Pipes {
     update() {
         var t = this
         for (var p of this.pipes) {
-            p.x -= 1
-            if (p.x < -100) {
+            p.x -= 0.9
+            if (p.x < -40) {
                 p.x = t.spaceX * t.columsOfPipes
             }
         }
@@ -108,11 +108,16 @@ class SceneBegin extends DjScene {
         this.pipe = Pipes.create(game)
         this.addElements(this.pipe)
 
+
+        this.earth = GameImage.create(game, 'earth')
+        this.earth.y = 423
+        this.addElements(this.earth)
+
         this.grounds = []
         for (var i = 0; i < 3; i++) {
             var g = GameImage.create(game, 'banner')
             g.y = 423
-            g.x = i * 350
+            g.x = i * 340
             g.speed = 0.5
             this.addElements(g)
             this.grounds.push(g)
@@ -137,12 +142,20 @@ class SceneBegin extends DjScene {
         })
 
         self.game.registerAction('w', function(keyStatus) {
-            self.bird.jump(-1.5)
+            self.bird.jump(-1)
         })
     }
 
     update() {
         super.update()
+        var g = this.game
+        // log('this.piep', this.pipe)
+        this.pipe.pipes.forEach((p) => {
+            if (this.bird.collide(p)) {
+                var s = SceneEnd.create(g)
+                g.replaceScene(s)
+            }
+        })
 
         this.grounds.forEach((g) => {
             g.x -= g.speed
