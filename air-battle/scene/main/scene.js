@@ -1,12 +1,3 @@
-const config = {
-    player_speed: 10,
-    bullet_speed: 5,
-    cloud_speed: 5,
-    enemies_speed: 5,
-    fire_cooldown: 5,
-}
-
-
 class DjScene {
     constructor(game) {
         this.game = game
@@ -30,7 +21,12 @@ class DjScene {
 
     removeElement(img) {
         var i = img.indexInScene
+        //  删除当前的 img
         this.elements.splice(i, 1)
+        //  其他元素的下标还有跟着改变
+        this.elements.forEach((e, i) => {
+            e.indexInScene = i
+        })
     }
 
     draw() {
@@ -65,7 +61,6 @@ class DjScene {
 class Scene extends DjScene {
     constructor(game) {
         super(game)
-        // this.init()
         this.setUp()
         this.setInputs()
     }
@@ -85,7 +80,7 @@ class Scene extends DjScene {
         this.addEnemies()
 
         // add partices
-        var ps = ParticleSystem(this.game)
+        this.ps = ParticleSystem.create(this.game)
         this.addElement(this.ps)
     }
 
@@ -116,56 +111,12 @@ class Scene extends DjScene {
         this.game.registerAction('f', function() {
             s.player.fire()
         })
-
-        // this.game.registerAction('f', this.ball.fire)
-    }
-
-    init() {
-        // TODO: 考虑如何消除这些全局变量
-        window.fps = 50
-        window.blocks = []
-        window.blocks = loadLevel(this.game, 1)
-        window.score = 0
-        this.paddle = Paddle(this.game)
-        this.ball = Ball(this.game)
-
-        this.registerAction()
-        this.mouseEvent()
     }
 
     update() {
         super.update()
-        this.cloud.y ++
-    }
+        this.enemies.forEach((e) => {
 
-    mouseEvent() {
-        var g = this
-        g.enableDrag = false
-        var canvas = g.game.canvas
-        canvas.addEventListener('mousedown', function(e) {
-            var x = e.offsetX
-            var y = e.offsetY
-            // log('down', x, y)
-            if (g.ball.hasPoint(x, y)) {
-                // log('hasPoint true', x, y)
-                // 设置拖拽状态
-                g.enableDrag = true
-            }
         })
-
-        canvas.addEventListener('mousemove', function(e) {
-            var x = e.offsetX
-            var y = e.offsetY
-            if (g.enableDrag) {
-                g.ball.x = x
-                g.ball.y = y
-            }
-        })
-
-        canvas.addEventListener('mouseup', function(e) {
-            var x = e.offsetX
-            var y = e.offsetY
-            g.enableDrag = false
-       })
     }
 }
