@@ -46,16 +46,14 @@ var enableDebugMode = function(game, enable) {
 
 var __main = function() {
     var images = {
-        bullet: 'img/ball.png',
-        cloud: 'img/block.png',
-        player: 'img/paddle.png',
+        bullet: 'img/bullet.png' ,
+        sky: 'img/sky.png',
+        player: 'img/player.png',
         begin: 'img/begin.jpg',
         background: 'img/bg.jpg',
-        enemy0: 'img/block.png',
-        enemy1: 'img/block.png',
-        enemy2: 'img/block.png',
-        enemy3: 'img/block.png',
-        enemy4: 'img/block.png',
+        enemy0: 'img/enemy0.png',
+        enemy1: 'img/enemy1.png',
+        enemy2: 'img/enemy2.png',
         fire: 'img/ball.png',
     }
 

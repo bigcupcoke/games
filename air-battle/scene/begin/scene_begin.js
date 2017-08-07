@@ -29,16 +29,12 @@ class SceneBegin extends DjScene {
         })
 
         var label = Label.create(game, 'hello')
-        this.addElements(label)
+        this.addElement(label)
 
         var ps = ParticleSystem.create(this.game)
-        this.addElements(ps)
-        log('ps', this.elements)
+        this.addElement(ps)
+        // log('ps', this.elements)
     }
-    //
-    // update() {
-    //
-    // }
 }
 
 class Particle extends GameImage {
@@ -48,16 +44,14 @@ class Particle extends GameImage {
     }
 
     setUp() {
-        this.life = 60
+        this.life = 80
     }
 
     init(x, y, vx, vy) {
-        // log(x, y, 'init in Particle befor')
         this.x = x
         this.y = y
         this.vx = vx
         this.vy = vy
-        // log(this.x, y, 'init in Particle()')
     }
 
     update() {
@@ -68,7 +62,6 @@ class Particle extends GameImage {
         var factor = 0.01
         this.vx += factor * this.vx
         this.vy += factor * this.vy
-
     }
 }
 
@@ -86,7 +79,7 @@ class ParticleSystem {
     setUp() {
         this.x = 100
         this.y = 100
-        this.countsOfParticles = 100
+        this.countsOfParticles = 30
         this.particles = []
 
         // 持续时间
@@ -94,6 +87,7 @@ class ParticleSystem {
     }
 
     update() {
+        log('update in partice')
         //  add particals
         this.duration--
         this.countsOfParticles--
@@ -117,18 +111,21 @@ class ParticleSystem {
 
         // 删除 fire
         this.particles = this.particles.filter((p) => p.life > 0)
+    }
 
+    //  remove system
+    remove() {
+        this.scene.removeElement(this)
     }
 
     draw() {
-        //  TODO:　粒子删除效果
-        if (this.duration < 0) {
-            return
+        //  粒子删除效果
+        if (this.duration <= 0) {
+            this.remove()
+        } else {
+            this.particles.forEach(function(p) {
+                p.draw()
+            })
         }
-        // log('darw in system ini', this.particles)
-        this.particles.forEach(function(p) {
-            // log('darw in system ini ')
-            p.draw()
-        })
     }
 }

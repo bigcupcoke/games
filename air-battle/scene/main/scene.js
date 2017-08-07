@@ -21,9 +21,16 @@ class DjScene {
         return instance
     }
 
-    addElements(img) {
+    addElement(img) {
         img.scene = this
+        var len = this.elements.length
+        img.indexInScene = len
         this.elements.push(img)
+    }
+
+    removeElement(img) {
+        var i = img.indexInScene
+        this.elements.splice(i, 1)
     }
 
     draw() {
@@ -67,11 +74,11 @@ class Scene extends DjScene {
         // log(this.game, 'game this')
         this.bg = GameImage.create(this.game, 'background')
         this.player = Player.create(this.game)
-        this.cloud = Cloud.create(this.game)
+        // this.cloud = Cloud.create(this.game)
 
-        this.addElements(this.bg)
-        this.addElements(this.player)
-        this.addElements(this.cloud)
+        this.addElement(this.bg)
+        this.addElement(this.player)
+        // this.addElement(this.cloud)
 
         //  addEnemies
         this.countsOfEnemies = 10
@@ -79,7 +86,7 @@ class Scene extends DjScene {
 
         // add partices
         var ps = ParticleSystem(this.game)
-        this.addElements(this.ps)
+        this.addElement(this.ps)
     }
 
     addEnemies() {
@@ -87,7 +94,7 @@ class Scene extends DjScene {
         for (var i = 0; i < this.countsOfEnemies; i++) {
             var e = Enemy.create(this.game)
             es.push(e)
-            this.addElements(e)
+            this.addElement(e)
         }
         this.enemies = es
     }

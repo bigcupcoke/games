@@ -6,6 +6,8 @@ class GameImage {
         this.y = 0
         this.w = this.texture.width
         this.h = this.texture.height
+        //  在 secne 中下标
+        this.indexInScene = -1
     }
 
     static create(game, name) {
@@ -73,7 +75,7 @@ class Player extends GameImage {
             b.x = x
             b.y = y
             // log(this, 'this')
-            this.scene.addElements(b)
+            this.scene.addElement(b)
         }
     }
 
