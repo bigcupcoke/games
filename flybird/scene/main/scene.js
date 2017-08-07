@@ -1,10 +1,10 @@
-const config = {
-    player_speed: 10,
-    bullet_speed: 5,
-    cloud_speed: 5,
-    enemies_speed: 5,
-    fire_cooldown: 5,
-}
+// const config = {
+//     player_speed: 10,
+//     bullet_speed: 5,
+//     cloud_speed: 5,
+//     enemies_speed: 5,
+//     fire_cooldown: 5,
+// }
 
 
 class DjScene {

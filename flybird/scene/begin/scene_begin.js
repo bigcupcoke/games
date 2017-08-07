@@ -52,12 +52,26 @@ class Pipes {
 
     update() {
         var t = this
-        for (var p of this.pipes) {
-            p.x -= 0.9
-            if (p.x < -40) {
-                p.x = t.spaceX * t.columsOfPipes
+        for (var i = 0; i < this.pipes.length / 2; i++) {
+            var p1 = this.pipes[i]
+            var p2 = this.pipes[i + 1]
+            p1.x -= 0.9
+            p2.x = p1.x
+            if (p1.x < -40) {
+                p1.x = t.spaceX * t.columsOfPipes
+                p2.x = p1.x
+                this.resetPipesPostion(p1, p2)
             }
         }
+        var debugMode = true
+        if (debugMode) {
+            this.debug()
+        }
+    }
+
+    debug() {
+        this.spaceX = config.pipe_spaceX.value
+        this.spaceY = config.pipe_spaceY.value
     }
 
     draw() {
@@ -100,6 +114,7 @@ class SceneBegin extends DjScene {
 
         var bird = Animation.create(game)
         this.bird = bird
+        this.bird.speed = config.bird_speed.value
         bird.x = 100
         bird.y = 100
         this.addElements(bird)
@@ -138,7 +153,7 @@ class SceneBegin extends DjScene {
         })
 
         self.game.registerAction('d', function(keyStatus) {
-            self.b.move(2, keyStatus)
+            self.b.move(this.bird.speed, keyStatus)
         })
 
         self.game.registerAction('w', function(keyStatus) {
@@ -146,8 +161,13 @@ class SceneBegin extends DjScene {
         })
     }
 
+    debug() {
+        this.bird.speed = config.bird_speed.value
+    }
+
     update() {
         super.update()
+        this.debug && this.debug()
         var g = this.game
         // log('this.piep', this.pipe)
         this.pipe.pipes.forEach((p) => {

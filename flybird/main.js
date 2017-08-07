@@ -64,7 +64,7 @@ var __main = function() {
         g.runWithScene(s)
     })
 
-    log(game, 'game')
+    // log(game, 'game')
     enableDebugMode(game, true)
 }
 
