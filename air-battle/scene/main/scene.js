@@ -80,8 +80,8 @@ class Scene extends DjScene {
         this.addEnemies()
 
         // add partices
-        this.ps = ParticleSystem.create(this.game)
-        this.addElement(this.ps)
+        // this.ps = ParticleSystem.create(this.game)
+        // this.addElement(this.ps)
     }
 
     addEnemies() {

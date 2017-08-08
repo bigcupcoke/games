@@ -34,6 +34,9 @@ class GameImage {
 class Bullet extends GameImage {
     constructor(game) {
         super(game, 'bullet')
+
+        //  子弹来源
+        this.origin = null
         this.setUp()
     }
 
@@ -45,25 +48,45 @@ class Bullet extends GameImage {
         this.speed = config.player_speed
     }
 
-    update() {
-        this.y -= this.speed
-
-        var enemies = this.scene.enemies
-        enemies.forEach((e) => {
+    updateFromPlayer(bullet) {
+        var b = bullet
+        var s = b.scene
+        var es = s.enemies
+        b.y -= b.speed
+        es.forEach((e) => {
             // log(e, 'e')
-            if (this.collide(e)) {
-                log(' 相撞')
+            if (b.collide(e)) {
+                log('player fired enemies')
                 var x = e.x + e.w / 2
-                var y = e.y
-                var ps = ParticleSystem.create(this.game)
-                this.scene.addElement(ps)
+                var y = e.y + e.h / 2
+                var ps = ParticleSystem.create(b.game)
+                b.scene.addElement(ps)
                 ps.x = x
                 ps.y = y
-                this.remove()
+                b.remove()
                 e.setUp()
             }
         })
+    }
 
+    updateFromEnemy(bullet) {
+        var b = bullet
+        var s = b.scene
+        var p = s.player
+        b.y += b.speed
+        if (b.collide(p)) {
+            log('player been fired')
+        }
+    }
+
+    update() {
+        var b = this
+        var o = b.origin
+        var updateFromOrigin = {
+            player: b.updateFromPlayer,
+            enemy: b.updateFromEnemy,
+        }
+        updateFromOrigin[o](b)
     }
 
     collide(b) {
@@ -104,6 +127,7 @@ class Player extends GameImage {
             var b = Bullet.create(this.game)
             b.x = x
             b.y = y
+            b.origin = 'player'
             this.scene.addElement(b)
         }
     }
@@ -147,7 +171,7 @@ class Enemy extends GameImage {
             this.setUp()
         }
         this.colldown--
-        // this.fire()
+        this.fire()
     }
 
     debug() {
@@ -162,9 +186,7 @@ class Enemy extends GameImage {
             var b = Bullet.create(this.game)
             b.x = x
             b.y = y
-            b.update = function() {
-                b.y += b.speed
-            }
+            b.origin = 'enemy'
             // log(b, 'this b')
             this.scene.addElement(b)
         }
