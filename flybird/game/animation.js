@@ -1,4 +1,4 @@
-class Animation {
+class Bird {
     constructor(game) {
         this.game = game
 
@@ -31,13 +31,14 @@ class Animation {
         this.frameIndex = 0
         this.frameCount = 20
 
-        //  水平饭抓标志
+        //  水平翻转
         this.filpX = false
 
         //  y轴速度
         this.vy = 1
         //  重力加速度
         this.gy = 10
+
         this.factor = 0.025
 
         this.rotation = 45

@@ -51,7 +51,6 @@ var __main = function() {
         bg: 'img/bg.jpg',
         bird0: 'img/bird0.png',
         bird1: 'img/bird1.png',
-        // bird2: 'img/bird2.png',
 
         banner: 'img/banner.jpg',
         pipe: 'img/pipe.png',
@@ -60,11 +59,10 @@ var __main = function() {
     }
 
     var game = Game.instance(window.fps, images, function(g) {
-        var s = SceneBegin.create(g)
+        var s = Scene.create(g)
         g.runWithScene(s)
     })
 
-    // log(game, 'game')
     enableDebugMode(game, true)
 }
 

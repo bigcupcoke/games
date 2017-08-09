@@ -1,12 +1,3 @@
-// const config = {
-//     player_speed: 10,
-//     bullet_speed: 5,
-//     cloud_speed: 5,
-//     enemies_speed: 5,
-//     fire_cooldown: 5,
-// }
-
-
 class DjScene {
     constructor(game) {
         this.game = game
@@ -58,107 +49,81 @@ class DjScene {
 class Scene extends DjScene {
     constructor(game) {
         super(game)
-        // this.init()
-        this.setUp()
+
+        var bg = GameImage.create(game, 'bg')
+        this.addElements(bg)
+
+        var bird = Animation.create(game)
+        this.bird = bird
+        this.bird.speed = config.bird_speed.value
+        bird.x = 100
+        bird.y = 100
+        this.addElements(bird)
         this.setInputs()
-    }
 
-    setUp() {
-        // log(this.game, 'game this')
-        this.bg = GameImage.create(this.game, 'background')
-        this.player = Player.create(this.game)
-        this.cloud = Cloud.create(this.game)
+        this.pipe = Pipes.create(game)
+        this.addElements(this.pipe)
 
-        this.addElements(this.bg)
-        this.addElements(this.player)
-        this.addElements(this.cloud)
 
-        //  addEnemies
-        this.countsOfEnemies = 10
-        this.addEnemies()
+        this.earth = GameImage.create(game, 'earth')
+        this.earth.y = 423
+        this.addElements(this.earth)
 
-        // add partices
-        var ps = ParticleSystem(this.game)
-        this.addElements(this.ps)
-    }
-
-    addEnemies() {
-        var es = []
-        for (var i = 0; i < this.countsOfEnemies; i++) {
-            var e = Enemy.create(this.game)
-            es.push(e)
-            this.addElements(e)
+        this.grounds = []
+        for (var i = 0; i < 3; i++) {
+            var g = GameImage.create(game, 'banner')
+            g.y = 423
+            g.x = i * 340
+            g.speed = 0.5
+            this.addElements(g)
+            this.grounds.push(g)
         }
-        this.enemies = es
+        this.g = g
     }
 
     setInputs() {
-        var s = this
-        this.game.registerAction('a', function() {
-            s.player.moveLeft()
-        })
-        this.game.registerAction('d', function() {
-            s.player.moveRight()
-        })
-        this.game.registerAction('w', function() {
-            s.player.moveUp()
-        })
-        this.game.registerAction('s', function() {
-            s.player.moveDown()
-        })
-        this.game.registerAction('f', function() {
-            s.player.fire()
+        var self = this
+        self.game.registerAction('k', function(g) {
+            var s = Scene.create(g)
+            game.replaceScene(s)
         })
 
-        // this.game.registerAction('f', this.ball.fire)
+        self.game.registerAction('a', function(keyStatus) {
+            // self.g.move(-2, keyStatus)
+            // self.g.x -= 1
+        })
+
+        self.game.registerAction('d', function(keyStatus) {
+            self.b.move(this.bird.speed, keyStatus)
+        })
+
+        self.game.registerAction('w', function(keyStatus) {
+            self.bird.jump(-1)
+        })
     }
 
-    init() {
-        // TODO: 考虑如何消除这些全局变量
-        window.fps = 30
-        window.blocks = []
-        window.blocks = loadLevel(this.game, 1)
-        window.score = 0
-        this.paddle = Paddle(this.game)
-        this.ball = Ball(this.game)
-
-        this.registerAction()
-        this.mouseEvent()
+    debug() {
+        this.bird.speed = config.bird_speed.value
     }
 
     update() {
         super.update()
-        this.cloud.y ++
-    }
-
-    mouseEvent() {
-        var g = this
-        g.enableDrag = false
-        var canvas = g.game.canvas
-        canvas.addEventListener('mousedown', function(e) {
-            var x = e.offsetX
-            var y = e.offsetY
-            // log('down', x, y)
-            if (g.ball.hasPoint(x, y)) {
-                // log('hasPoint true', x, y)
-                // 设置拖拽状态
-                g.enableDrag = true
+        this.debug && this.debug()
+        var g = this.game
+        // log('this.piep', this.pipe)
+        this.pipe.pipes.forEach((p) => {
+            if (this.bird.collide(p)) {
+                var s = SceneEnd.create(g)
+                g.replaceScene(s)
             }
         })
 
-        canvas.addEventListener('mousemove', function(e) {
-            var x = e.offsetX
-            var y = e.offsetY
-            if (g.enableDrag) {
-                g.ball.x = x
-                g.ball.y = y
+        this.grounds.forEach((g) => {
+            g.x -= g.speed
+            var x = 300
+            if (g.x < -x) {
+                g.x = x
             }
         })
-
-        canvas.addEventListener('mouseup', function(e) {
-            var x = e.offsetX
-            var y = e.offsetY
-            g.enableDrag = false
-       })
     }
 }
