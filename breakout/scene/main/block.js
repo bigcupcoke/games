@@ -1,39 +1,29 @@
-var Block = function(game, positon) {
-    // var img = imageFromPath('block.png')
-
-    var p = positon
-    var img = game.imageByName('block')
-    var o = {
-        img: img,
-        x: p.x,
-        y: p.y,
-        alive: true,
-        lives: p.lives || 1,
-    }
-    o.img = img.image
-    o.w = img.w
-    o.h = img.h
-
-    o.rectIntersects = function(a, b) {
-        var o = a
-        if (b.y > o.y && b.y < o.y + o.img.height) {
-            if (b.x > o.x && b.x < o.x + o.img.width) {
-                return true
-            }
-        }
-        return false
+class Block {
+    constructor(game, positon) {
+        this.game = game
+        this.texture = game.textureByName('block')
+        this.w = this.texture.width
+        this.h = this.texture.height
+        this.x = positon.x
+        this.y = positon.y
+        this.alive = true
+        //  life 的 复数其实应该是lives, 但为了保持一致性，复数全部用 +s 的方法表示
+        this.lifes = positon.lifes || 1
     }
 
-    o.collide = function(b) {
-        return o.alive && (o.rectIntersects(o, b) || o.rectIntersects(b, o))
+    static create(game, positon) {
+        return new this(game, positon)
     }
 
-    o.kill = function() {
-        o.lives--
-        if (o.lives <1) {
-            o.alive = false
+    collide(b) {
+        var o = this
+        return o.alive && (rectIntersects(o, b) || rectIntersects(b, o))
+    }
+
+    kill() {
+        this.lifes--
+        if (this.lifes < 1) {
+            this.alive = false
         }
     }
-
-    return o
 }

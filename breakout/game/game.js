@@ -1,6 +1,6 @@
 class Game {
     constructor(fps, images, runCallback) {
-        window.fps = fps
+        config.fps = fps
         this.images = images
         this.runCallback = runCallback
 
@@ -29,7 +29,7 @@ class Game {
 
     drawImg(o) {
         // log('o', this)
-        this.context.drawImage(o.img, o.x, o.y)
+        this.context.drawImage(o.texture, o.x, o.y)
     }
 
     clear() {
@@ -74,21 +74,28 @@ class Game {
         // log('render success')
 
         setTimeout(function () {
-            // log('fps', window.fps)
+            // log('fps', config.fps)
             g.renderLoop()
-        }, 1000 / window.fps)
+        }, 1000 / config.fps)
     }
 
-    imageByName(name) {
+    textureByName(name) {
         var g = this
         var img = g.images[name]
-        var image = {
-            w: img.width,
-            h: img.height,
-            image: img,
-        }
-        return image
+        return img
     }
+
+
+    // imageByName(name) {
+    //     var g = this
+    //     var img = g.images[name]
+    //     var image = {
+    //         w: img.width,
+    //         h: img.height,
+    //         image: img,
+    //     }
+    //     return image
+    // }
 
     runWithScene(scene) {
         var g = this

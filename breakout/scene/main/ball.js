@@ -1,31 +1,35 @@
-var Ball = function(game) {
-    // var img = imageFromPath('ball.png')
-    var img = game.imageByName('ball')
-    var o = {
-        img: img,
-        x: 100,
-        y: 380,
-        speedX: 5,
-        speedY: 5,
-        fired: false,
-    }
-    o.img = img.image
-    o.w = img.w
-    o.h = img.h
-    o.boundX = function() {
-        o.speedX *= -1
+class Ball {
+    constructor(game) {
+        this.game = game
+        this.texture = game.textureByName('ball')
+        this.w = this.texture.width
+        this.h = this.texture.height
+        this.x = config.ball.x
+        this.y = config.ball.y
+        this.speedX = config.ball.speedX
+        this.speedY = config.ball.speedY
+        this.fired = false
     }
 
-    o.boundY = function() {
-        o.speedY *= -1
+    static create(game) {
+        return new this(game)
     }
 
-    o.bound = function() {
-        o.boundX()
-        o.boundY()
+    boundX() {
+        this.speedX *= -1
     }
 
-    o.move = function() {
+    boundY() {
+        this.speedY *= -1
+    }
+
+    bound() {
+        this.boundX()
+        this.boundY()
+    }
+
+    move() {
+        var o = this
         if (o.fired) {
             if (o.x < 0 || o.x > 500) {
                 o.boundX()
@@ -38,15 +42,14 @@ var Ball = function(game) {
         }
     }
 
-    o.fire = function() {
-        o.fired = true
+    fire() {
+        this.fired = true
     }
 
-    o.hasPoint = function(x, y) {
+    hasPoint(x, y) {
+        var o = this
         var xIn = x >= o.x && x <= o.x + o.w
         var yIn = y >= o.y && y <= o.y + o.h
         return xIn && yIn
     }
-    
-    return o
 }

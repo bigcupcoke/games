@@ -4,7 +4,7 @@ var loadLevel = function(game, n) {
     var blocks = []
     level.forEach(function(e) {
         // log(e, 'e')
-        var b = Block(game, e)
+        var b = Block.create(game, e)
         blocks.push(b)
     })
     return blocks
@@ -16,7 +16,7 @@ var enableDebugMode = function(game, enable) {
     }
 
     //  debug pause
-    window.paused = false
+    config.paused = false
     var pause = function() {
         window.addEventListener('keydown', function(e) {
             if (e.key === 'p') {
@@ -30,7 +30,7 @@ var enableDebugMode = function(game, enable) {
         var k = e.key
         if (k === 'p') {
             //  paused
-            window.paused = !window.paused
+            config.paused = !config.paused
         } else if ('123456789'.includes(k)) {
             blocks = loadLevel(game, Number(k))
         }
@@ -40,7 +40,7 @@ var enableDebugMode = function(game, enable) {
     var input = document.querySelector('#id-input-fps')
     input.classList.add('active')
     input.addEventListener('input', function(e) {
-        window.fps = this.value
+        config.fps = this.value
     })
 }
 
@@ -51,8 +51,8 @@ var __main = function() {
         paddle: 'img/paddle.png',
     }
 
-    var game = Game.instance(window.fps, images, function(g) {
-        var s = SceneBegin.create(g)
+    var game = Game.instance(config.fps, images, function(g) {
+        var s = Scene.create(g)
         // log(s, 's')
         g.runWithScene(s)
     })

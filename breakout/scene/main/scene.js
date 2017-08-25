@@ -25,26 +25,36 @@ class Scene extends DjScene {
     }
 
     registerAction() {
-        this.game.registerAction('a', this.paddle.moveLeft)
-        this.game.registerAction('d', this.paddle.moveRight)
-        this.game.registerAction('f', this.ball.fire)
+        var t = this
+        this.game.registerAction('a', function() {
+            t.paddle.moveLeft()
+        })
+
+        this.game.registerAction('d', function() {
+            t.paddle.moveRight()
+        })
+
+        this.game.registerAction('f', function() {
+            t.ball.fire()
+        })
     }
 
     init() {
         // TODO: 考虑如何消除这些全局变量
-        window.fps = 50
+        config.fps = 50
         window.blocks = []
-        window.blocks = loadLevel(this.game, 1)
+        window.blocks = loadLevel(this.game, 2)
         window.score = 0
-        this.paddle = Paddle(this.game)
-        this.ball = Ball(this.game)
+        // log('paddle', Paddle)
+        this.paddle = Paddle.create(this.game)
+        this.ball = Ball.create(this.game)
 
         this.registerAction()
         this.mouseEvent()
     }
 
     update() {
-        if (window.paused) {
+        if (config.paused) {
             return
         }
 
@@ -61,9 +71,9 @@ class Scene extends DjScene {
         }
 
         for (var i = 0; i < window.blocks.length; i++) {
-            log('blocks',  window.blocks)
-            var blocks = window.blocks[i]
-            if(blocks.collide(b)) {
+            // log('blocks',  window.blocks)
+            var block = window.blocks[i]
+            if(block.collide(b)) {
                 b.boundY()
                 block.kill()
                 //  score +100 when ball ana block collide
@@ -78,7 +88,7 @@ class Scene extends DjScene {
         g.drawImg(this.ball)
 
         for (var i = 0; i < window.blocks.length; i++) {
-            log('blocks', blocks)
+            // log('blocks', blocks)
             var b = window.blocks[i]
             if (b.alive) {
                 g.drawImg(b)
