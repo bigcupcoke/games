@@ -50,7 +50,7 @@ class Game {
     //  registerAction
     registerAction(key, callback) {
         this.actions[key] = callback
-        // log('cb', callback)
+        log('cb', key, callback)
     }
 
     // loop render
