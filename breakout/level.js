@@ -23,12 +23,12 @@ var levels = [
         {
             x: 100,
             y: 100,
-            lives: 2,
+            lifes: 2,
         },
         {
             x: 150,
             y: 150,
-            lives: 3,
+            lifes: 3,
         },
     ],
     [
@@ -39,17 +39,17 @@ var levels = [
         {
             x: 100,
             y: 100,
-            lives: 2,
+            lifes: 2,
         },
         {
             x: 150,
             y: 150,
-            lives: 3,
+            lifes: 3,
         },
         {
             x: 200,
             y: 200,
-            lives: 4,
+            lifes: 4,
         },
     ],
 ]

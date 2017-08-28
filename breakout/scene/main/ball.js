@@ -43,6 +43,7 @@ class Ball {
     }
 
     fire() {
+        log('fired')
         this.fired = true
     }
 

@@ -7,7 +7,8 @@ var loadLevel = function(game, n) {
         var b = Block.create(game, e)
         blocks.push(b)
     })
-    return blocks
+    config.blocks = blocks
+    log('blocks', blocks)
 }
 
 var enableDebugMode = function(game, enable) {
@@ -32,7 +33,7 @@ var enableDebugMode = function(game, enable) {
             //  paused
             config.paused = !config.paused
         } else if ('123456789'.includes(k)) {
-            blocks = loadLevel(game, Number(k))
+            loadLevel(game, Number(k))
         }
     })
 
@@ -52,7 +53,7 @@ var __main = function() {
     }
 
     var game = Game.instance(config.fps, images, function(g) {
-        var s = SceneEdit.create(g, 1)
+        var s = SceneBegin.create(g)
         // log(s, 's')
         g.runWithScene(s)
     })

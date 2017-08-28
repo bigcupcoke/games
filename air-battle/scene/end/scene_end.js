@@ -1,14 +1,22 @@
 class SceneEnd extends DjScene {
     constructor(game) {
-        super()
+        super(game)
         this.game = game
-        game.registerAction('r', function() {
-            var s = SceneBegin.create(game)
-            game.replaceScene(s)
-        })
+        this.setUp()
     }
 
-    draw() {
-        this.game.context.fillText('GAME OVER', 250, 150)
+    setUp() {
+        var g = this.game
+        var b = GameImage.create(this.game, 'begin')
+        this.addElement(b)
+
+        var label = Label.create(g, 'GAME OVER, 按 R 键开始游戏')
+        this.addElement(label)
+
+        g.registerAction('r', function() {
+            var s = SceneBegin.create(g)
+            g.replaceScene(s)
+        })
+        log('end sce')
     }
 }

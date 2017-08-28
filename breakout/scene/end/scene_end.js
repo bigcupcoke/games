@@ -9,6 +9,7 @@ class SceneEnd extends DjScene {
     }
 
     draw() {
-        this.game.context.fillText('GAME OVER', 250, 150)
+        this.game.context.fillText('GAME OVER', 150, 150)
+        this.game.context.fillText('按 R 键重新开始', 150, 200)
     }
 }

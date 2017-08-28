@@ -89,8 +89,8 @@ class Game {
 
     runWithScene(scene) {
         var g = this
-        g.scene = scene
-        g.renderLoop()
+        this.scene = scene
+        this.renderLoop()
     }
 
     replaceScene(scene) {

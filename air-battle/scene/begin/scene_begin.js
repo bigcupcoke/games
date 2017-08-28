@@ -1,38 +1,21 @@
-class Label {
-    constructor(game, text) {
-        this.game = game
-        this.text = text
-
-    }
-
-    static create(game, text) {
-        var instance = new this(game, text)
-        return instance
-    }
-
-    draw() {
-        this.game.context.fillText(this.text, 200, 180)
-    }
-
-    update() {
-
-    }
-}
-
 class SceneBegin extends DjScene {
     constructor(game) {
-        super()
+        super(game)
         this.game = game
-        game.registerAction('k', function() {
-            var s = Scene.create(game)
-            game.replaceScene(s)
-        })
+        this.setUp()
+    }
 
-        var label = Label.create(game, 'hello')
+    setUp() {
+        var g = this.game
+        var b = GameImage.create(g, 'begin')
+        this.addElement(b)
+
+        var label = Label.create(g, '按 K 键开始游戏')
         this.addElement(label)
 
-        var ps = ParticleSystem.create(this.game)
-        this.addElement(ps)
-        // log('ps', this.elements)
+        g.registerAction('k', function() {
+            var s = Scene.create(g)
+            g.replaceScene(s)
+        })
     }
 }

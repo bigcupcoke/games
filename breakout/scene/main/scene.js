@@ -21,6 +21,7 @@ class Scene extends DjScene {
     constructor(game) {
         super()
         this.game = game
+        // log('blocksss', blocks)
         this.init()
     }
 
@@ -40,12 +41,6 @@ class Scene extends DjScene {
     }
 
     init() {
-        // TODO: 考虑如何消除这些全局变量
-        config.fps = 50
-        window.blocks = []
-        window.blocks = loadLevel(this.game, 2)
-        window.score = 0
-        // log('paddle', Paddle)
         this.paddle = Paddle.create(this.game)
         this.ball = Ball.create(this.game)
 
@@ -70,14 +65,14 @@ class Scene extends DjScene {
             b.bound()
         }
 
-        for (var i = 0; i < window.blocks.length; i++) {
-            // log('blocks',  window.blocks)
-            var block = window.blocks[i]
+        for (var i = 0; i < config.blocks.length; i++) {
+            // log('blocks',  config.blocks)
+            var block = config.blocks[i]
             if(block.collide(b)) {
                 b.boundY()
                 block.kill()
                 //  score +100 when ball ana block collide
-                window.score += 100
+                config.score += 100
             }
         }
     }
@@ -87,14 +82,18 @@ class Scene extends DjScene {
         g.drawImg(this.paddle)
         g.drawImg(this.ball)
 
-        for (var i = 0; i < window.blocks.length; i++) {
+        if (config.blocks.length === 0) {
+            loadLevel(g, 1)
+        }
+
+        for (var i = 0; i < config.blocks.length; i++) {
             // log('blocks', blocks)
-            var b = window.blocks[i]
+            var b = config.blocks[i]
             if (b.alive) {
                 g.drawImg(b)
             }
         }
-        g.context.fillText(`score: ${score}`, 30, 350)
+        g.context.fillText(`score: ${config.score}`, 30, 350)
     }
 
     mouseEvent() {

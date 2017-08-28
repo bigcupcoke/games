@@ -5,7 +5,7 @@ class Particle extends GameImage {
     }
 
     setUp() {
-        this.life = 100
+        this.life = 10
     }
 
     init(x, y, vx, vy) {
@@ -29,6 +29,7 @@ class Particle extends GameImage {
 class ParticleSystem {
     constructor(game) {
         this.game = game
+        this.scene = game.scene
         this.setUp()
     }
 
@@ -55,9 +56,9 @@ class ParticleSystem {
             var p = Particle.create(this.game)
 
             //  设置初始左边
-            var s = 2
-            var vx = 0.1 * randomBetween(-s, s)
-            var vy = 0.1 * randomBetween(-s, s)
+            var s = 5
+            var vx = 0.4 * randomBetween(-s, s)
+            var vy = 0.4 * randomBetween(-s, s)
             // log(vx, vy)
             p.init(this.x, this.y, vx, vy)
             this.particles.push(p)

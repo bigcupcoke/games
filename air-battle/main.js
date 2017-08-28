@@ -4,7 +4,7 @@ var enableDebugMode = function(game, enable) {
     }
 
     //  debug pause
-    window.paused = false
+    config.paused = false
     var pause = function() {
         window.addEventListener('keydown', function(e) {
             if (e.key === 'p') {
@@ -18,7 +18,7 @@ var enableDebugMode = function(game, enable) {
     //     var k = e.key
     //     if (k === 'p') {
     //         //  paused
-    //         window.paused = !window.paused
+    //         config.paused = !config.paused
     //     } else if ('123456789'.includes(k)) {
     //         blocks = loadLevel(game, Number(k))
     //     }
@@ -33,20 +33,20 @@ var enableDebugMode = function(game, enable) {
 }
 
 var __main = function() {
-
     var images = {
-        bullet: 'img/bullet.png' ,
-        sky: 'img/sky.png',
+        bullet: 'img/ball.png' ,
         player: 'img/player.png',
         begin: 'img/begin.jpg',
         background: 'img/bg.jpg',
+        cloud: 'img/cloud0.png',
         enemy0: 'img/enemy0.png',
         enemy1: 'img/enemy1.png',
         enemy2: 'img/enemy2.png',
+        enemy3: 'img/enemy3.png',
         particle: 'img/ball.png',
     }
 
-    var game = Game.instance(window.fps, images, function(g) {
+    var game = Game.instance(30, images, function(g) {
         // var s = SceneBegin.create(g)
         var s = Scene.create(g)
         // log(s, 's')

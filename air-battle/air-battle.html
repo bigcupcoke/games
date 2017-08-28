@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>breakout</title>
+        <title>air-battle</title>
         <style media="screen">
             body {
                 background-color: darkslategrey;
@@ -26,26 +26,26 @@
         <script src="game/image.js" charset="utf-8"></script>
         <script src="game/particle_system.js" charset="utf-8"></script>
         <script src="game/config.js" charset="utf-8"></script>
+        <script src="game/label.js" charset="utf-8"></script>
         <!-- main scene 相关 -->
-        <script src="scene/main/paddle.js" charset="utf-8"></script>
-        <script src="scene/main/ball.js" charset="utf-8"></script>
-        <script src="scene/main/block.js" charset="utf-8"></script>
+        <script src="scene/main/bullet.js" charset="utf-8"></script>
+        <script src="scene/main/player.js" charset="utf-8"></script>
+        <script src="scene/main/enemy.js" charset="utf-8"></script>
+        <script src="scene/main/cloud.js" charset="utf-8"></script>
         <script src="scene/main/scene.js" charset="utf-8"></script>
         <!-- end & begin scene  -->
         <script src="scene/begin/scene_begin.js" charset="utf-8"></script>
         <script src="scene/end/scene_end.js" charset="utf-8"></script>
-        <!--  level 相关-->
-        <script src="level.js" charset="utf-8"></script>
     </head>
     <body>
-        <canvas id="dj-canvas" width="300" height="400"></canvas>
+        <canvas id="dj-canvas" width="500" height="600"></canvas>
         <input type="range" id="id-input-fps" value="">
         <div class="">
             <label for="">
-                <input type="range" class="input-player-speed"
+                <input type="range" class="input-config-item"
                 value=""
-                min=0
-                max=10
+                min=1
+                max=30
                 data-value="config.player_speed"
                 >
                 player速度: <span class="speed-label"></span>
@@ -54,10 +54,10 @@
         </div>
         <div class="">
             <label for="">
-                <input type="range" class="input-player-speed"
+                <input type="range" class="input-config-item"
                 value=""
-                min=0
-                max=10
+                min=1
+                max=30
                 data-value="config.bullet_speed"
                 >
                 子弹速度: <span class="speed-label"></span>
@@ -66,10 +66,10 @@
         </div>
         <div class="">
             <label for="">
-                <input type="range" class="input-player-speed"
+                <input type="range" class="input-config-item"
                 value=""
-                min=0
-                max=10
+                min=1
+                max=30
                 data-value="config.fire_cooldown"
                 >
                 子弹cd时间: <span class="speed-label"></span>
@@ -78,10 +78,10 @@
         </div>
         <div class="">
             <label for="">
-                <input type="range" class="input-player-speed"
+                <input type="range" class="input-config-item"
                 value=""
-                min=-10
-                max=10
+                min=1
+                max=30
                 data-value="config.cloud_speed"
                 >
                 云朵速度: <span class="speed-label"></span>
@@ -90,10 +90,10 @@
         </div>
         <div class="">
             <label for="">
-                <input type="range" class="input-player-speed"
+                <input type="range" class="input-config-item"
                 value=""
-                min=0
-                max=10
+                min=1
+                max=30
                 data-value="config.enemies_speed"
                 >
                 敌人速度: <span class="speed-label"></span>
@@ -115,7 +115,7 @@
                 }
             }
 
-            bindAll('.input-player-speed', 'input', function(event) {
+            bindAll('.input-config-item', 'input', function(event) {
                 var self = event.target
                 var valconfig = self.dataset.value
                 var valNow = self.value

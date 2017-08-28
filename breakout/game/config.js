@@ -1,6 +1,8 @@
 const config = {
     fps: 30,
     paused: false,
+    blocks: [],
+    score: 0,
     paddle: {
         x: 100,
         y: 350,

@@ -2,7 +2,7 @@ class DjScene {
     constructor(game) {
         this.game = game
         this.elements = []
-
+        this.game.scene = this
         //  set debug mode
         this.debugModeEnabled = true
     }
@@ -12,20 +12,18 @@ class DjScene {
         return instance
     }
 
-    addElement(img) {
-        img.scene = this
+    addElement(ele) {
         var len = this.elements.length
-        img.indexInScene = len
-        this.elements.push(img)
+        ele.index = len
+        this.elements.push(ele)
     }
 
-    removeElement(img) {
-        var i = img.indexInScene
-        //  删除当前的 img
+    removeElement(ele) {
+        var es = this.elements
+        var i = ele.index
         this.elements.splice(i, 1)
-        //  其他元素的下标还有跟着改变
-        this.elements.forEach((e, i) => {
-            e.indexInScene = i
+        es.forEach(function(e, i) {
+            e.index = i
         })
     }
 
@@ -68,10 +66,12 @@ class Scene extends DjScene {
     setUp() {
         // log(this.game, 'game this')
         this.bg = GameImage.create(this.game, 'background')
+        this.cloud = Cloud.create(this.game)
         this.player = Player.create(this.game)
         // this.cloud = Cloud.create(this.game)
 
         this.addElement(this.bg)
+        this.addElement(this.cloud)
         this.addElement(this.player)
         // this.addElement(this.cloud)
 
@@ -80,11 +80,23 @@ class Scene extends DjScene {
         this.addEnemies()
 
         // add partices
-        // this.ps = ParticleSystem.create(this.game)
-        // this.addElement(this.ps)
+        this.ps = ParticleSystem.create(this.game)
+        this.addElement(this.ps)
+
+        this.bullets = []
     }
 
     addEnemies() {
+        var es = []
+        for (var i = 0; i < this.countsOfEnemies; i++) {
+            var e = Enemy.create(this.game)
+            es.push(e)
+            this.addElement(e)
+        }
+        this.enemies = es
+    }
+
+    addBullets() {
         var es = []
         for (var i = 0; i < this.countsOfEnemies; i++) {
             var e = Enemy.create(this.game)
@@ -113,10 +125,16 @@ class Scene extends DjScene {
         })
     }
 
+    draw() {
+        super.draw()
+        this.game.context.fillText(`生命值${this.player.lifes}`, 10, 550)
+    }
+
     update() {
         super.update()
-        this.enemies.forEach((e) => {
-
-        })
+        if (this.player.lifes <= 0) {
+            var s = SceneEnd.create(this.game)
+            this.game.replaceScene(s)
+        }
     }
 }

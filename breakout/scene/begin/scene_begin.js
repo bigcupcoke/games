@@ -6,9 +6,15 @@ class SceneBegin extends DjScene {
             var s = Scene.create(game)
             game.replaceScene(s)
         })
+
+        game.registerAction('e', function() {
+            var s = SceneEdit.create(game)
+            game.replaceScene(s)
+        })
     }
 
     draw() {
-        this.game.context.fillText('welcome to break out press k to begin', 200, 180)
+        this.game.context.fillText('按 K 键开始游戏', 150, 150)
+        this.game.context.fillText('按 E 键编辑关卡', 150, 200)
     }
 }
