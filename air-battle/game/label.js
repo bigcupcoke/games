@@ -11,7 +11,6 @@ class Label {
     }
 
     draw() {
-        this.game.context.font = '25px serif'
         this.game.context.fillText(this.text, 100, 180)
     }
 

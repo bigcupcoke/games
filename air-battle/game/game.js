@@ -9,7 +9,7 @@ class Game {
         this.keydowns = {}
         this.canvas = document.querySelector('#dj-canvas')
         this.context = this.canvas.getContext('2d')
-
+        this.context.font = '35px serif'
         // change keydowns  state
         var self = this
         window.addEventListener('keydown', function(e) {
