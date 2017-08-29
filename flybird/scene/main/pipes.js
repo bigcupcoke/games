@@ -3,15 +3,15 @@ class Pipes {
         this.game = game
         this.pipes = []
         this.spaceY = 150
-        this.spaceX = 180
+        this.spaceX = 170
         this.columsOfPipes = 3
         for (var i = 0; i < this.columsOfPipes; i++) {
             var p1 = GameImage.create(game, 'pipe')
+            var p2 = GameImage.create(game, 'pipe')
             p1.filpY = true
             p1.x = 500 + i * this.spaceX
-
-            var p2 = GameImage.create(game, 'pipe')
-            p2.x = p1.x
+            p2.x = 500 + i * this.spaceX
+            // log("x p", p2.x)
             this.resetPipesPostion(p1, p2)
             this.pipes.push(p1)
             this.pipes.push(p2)
@@ -25,19 +25,20 @@ class Pipes {
     resetPipesPostion(p1, p2) {
         p1.y = randomBetween(-400, -200)
         p2.y = p1.y + p2.h + this.spaceY
-        log('p1, p2', p1.y, p2.y)
     }
 
     update() {
         var t = this
-        for (var i = 0; i < this.pipes.length / 2; i++) {
+        for (var i = 0; i < this.pipes.length; i+=2) {
             var p1 = this.pipes[i]
             var p2 = this.pipes[i + 1]
             p1.x -= 0.9
             p2.x = p1.x
+            // log('x', i, p1.x)
             if (p1.x < -40) {
                 p1.x = t.spaceX * t.columsOfPipes
                 p2.x = p1.x
+                log('p1x', p1.x)
                 this.resetPipesPostion(p1, p2)
             }
         }

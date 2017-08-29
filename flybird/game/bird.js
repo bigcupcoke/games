@@ -1,7 +1,8 @@
-class Animation {
+class Bird {
     constructor(game) {
         this.game = game
 
+        //  不用换图， 直接rotate 角度的效果更好
         this.status = {
             //  bird 闲置
             idle: [],
@@ -16,12 +17,6 @@ class Animation {
             var t = game.textureByName(name)
             this.status['idle'].push(t)
         }
-
-        // for (var i = 0; i < 10; i++) {
-        //     var name = `run${i}`
-        //     var t = game.textureByName(name)
-        //     this.status['run'].push(t)
-        // }
 
         this.statusName = 'idle'
 
@@ -42,10 +37,17 @@ class Animation {
         this.factor = 0.025
 
         this.rotation = 45
+
+        this.x = 100
+        this.y = 100
     }
 
     static create(game) {
         return new this(game)
+    }
+
+    debug() {
+        this.speed = config.bird_speed.value
     }
 
     frames() {

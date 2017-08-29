@@ -59,7 +59,7 @@ var __main = function() {
     }
 
     var game = Game.instance(window.fps, images, function(g) {
-        var s = Scene.create(g)
+        var s = SceneBegin.create(g)
         g.runWithScene(s)
     })
 

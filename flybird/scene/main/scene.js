@@ -53,32 +53,23 @@ class Scene extends DjScene {
         var bg = GameImage.create(game, 'bg')
         this.addElements(bg)
 
-        var bird = Animation.create(game)
+        var bird = Bird.create(game)
         this.bird = bird
-        this.bird.speed = config.bird_speed.value
-        bird.x = 100
-        bird.y = 100
         this.addElements(bird)
-        this.setInputs()
 
         this.pipe = Pipes.create(game)
+        log('this.pipe', this.pipe.pipes)
         this.addElements(this.pipe)
 
-
+        //  黄色的 土
         this.earth = GameImage.create(game, 'earth')
         this.earth.y = 423
         this.addElements(this.earth)
 
-        this.grounds = []
-        for (var i = 0; i < 3; i++) {
-            var g = GameImage.create(game, 'banner')
-            g.y = 423
-            g.x = i * 340
-            g.speed = 0.5
-            this.addElements(g)
-            this.grounds.push(g)
-        }
-        this.g = g
+        var slider = Slider.create(game)
+        this.addElements(slider)
+
+        this.setInputs()
     }
 
     setInputs() {
@@ -110,19 +101,10 @@ class Scene extends DjScene {
         super.update()
         this.debug && this.debug()
         var g = this.game
-        // log('this.piep', this.pipe)
         this.pipe.pipes.forEach((p) => {
             if (this.bird.collide(p)) {
                 // var s = SceneEnd.create(g)
                 // g.replaceScene(s)
-            }
-        })
-
-        this.grounds.forEach((g) => {
-            g.x -= g.speed
-            var x = 300
-            if (g.x < -x) {
-                g.x = x
             }
         })
     }
