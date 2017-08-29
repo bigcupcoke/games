@@ -47,8 +47,8 @@ var __main = function() {
     }
 
     var game = Game.instance(30, images, function(g) {
-        // var s = SceneBegin.create(g)
-        var s = Scene.create(g)
+        var s = SceneBegin.create(g)
+        // var s = Scene.create(g)
         // log(s, 's')
         g.runWithScene(s)
     })

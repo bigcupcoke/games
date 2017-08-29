@@ -1,4 +1,4 @@
-class Bird {
+class Animation {
     constructor(game) {
         this.game = game
 

@@ -89,8 +89,8 @@ class Scene extends DjScene {
         })
 
         self.game.registerAction('a', function(keyStatus) {
-            // self.g.move(-2, keyStatus)
-            // self.g.x -= 1
+            self.g.move(-2, keyStatus)
+            self.g.x -= 1
         })
 
         self.game.registerAction('d', function(keyStatus) {
@@ -113,8 +113,8 @@ class Scene extends DjScene {
         // log('this.piep', this.pipe)
         this.pipe.pipes.forEach((p) => {
             if (this.bird.collide(p)) {
-                var s = SceneEnd.create(g)
-                g.replaceScene(s)
+                // var s = SceneEnd.create(g)
+                // g.replaceScene(s)
             }
         })
 
