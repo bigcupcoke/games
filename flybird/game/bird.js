@@ -46,6 +46,19 @@ class Bird {
         return new this(game)
     }
 
+
+    empty() {
+        this.vy = 0
+        this.gy = 0
+        this.rotation = 0
+        this.update = function() {
+            this.cycleFrames()
+        }
+        this.debug = function() {}
+        this.jump = function() {}
+        this.move = function() {}
+    }
+
     debug() {
         this.speed = config.bird_speed.value
     }
@@ -58,7 +71,6 @@ class Bird {
         this.vy = v
         this.rotation = -45
     }
-
 
     rectIntersects(a, b) {
         var o = a
@@ -75,13 +87,17 @@ class Bird {
         return  (o.rectIntersects(o, b) || o.rectIntersects(b, o))
     }
 
-    update() {
+    cycleFrames() {
         this.frameCount--
         if (this.frameCount === 0 ) {
             this.frameCount = 20
             this.frameIndex = (this.frameIndex + 1) % this.frames().length
             this.texture = this.frames()[this.frameIndex]
         }
+    }
+
+    update() {
+        this.cycleFrames()
 
         this.y += this.vy
         this.vy += this.gy * this.factor

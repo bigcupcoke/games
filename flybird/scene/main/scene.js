@@ -5,6 +5,8 @@ class DjScene {
 
         //  set debug mode
         this.debugModeEnabled = true
+
+        this.init()
     }
 
     static create(game) {
@@ -15,6 +17,45 @@ class DjScene {
     addElements(img) {
         img.scene = this
         this.elements.push(img)
+    }
+
+    init() {
+        var game = this.game
+        this.bg = GameImage.create(game, 'bg')
+        this.addElements(this.bg)
+
+        this.bird = Bird.create(game)
+        this.addElements(this.bird)
+    }
+
+    initSlider() {
+        this.slider = Slider.create(this.game)
+        this.addElements(this.slider)
+    }
+
+
+    //  清空鸟的 飞行， 下降， 事件等
+     // 为开始和结束场景准备的
+    emptyBird() {
+        this.bird.empty()
+        this.bird.x = 150
+        this.bird.y = 200
+    }
+
+    //  画标语, 为开始和结束场景准备的
+    drawLabel(text) {
+        var label = Label.create(this.game, text)
+        label.x = 0
+        label.y = 0
+        this.addElements(label)
+    }
+
+   //  画图, 为开始和结束场景准备的
+    drawImg(name) {
+        this.image = GameImage.create(this.game, name)
+        this.image.y = 150
+        this.image.x = 50
+        this.addElements(this.image)
     }
 
     draw() {
@@ -50,46 +91,25 @@ class Scene extends DjScene {
     constructor(game) {
         super(game)
 
-        var bg = GameImage.create(game, 'bg')
-        this.addElements(bg)
-
-        var bird = Bird.create(game)
-        this.bird = bird
-        this.addElements(bird)
 
         this.pipe = Pipes.create(game)
-        log('this.pipe', this.pipe.pipes)
+        // log('this.pipe', this.pipe.pipes)
         this.addElements(this.pipe)
 
-        //  黄色的 土
+        //  滑条下面黄色的土部分
         this.earth = GameImage.create(game, 'earth')
         this.earth.y = 423
         this.addElements(this.earth)
 
-        var slider = Slider.create(game)
-        this.addElements(slider)
-
+        this.initSlider()
         this.setInputs()
     }
 
     setInputs() {
-        var self = this
-        self.game.registerAction('k', function(g) {
-            var s = Scene.create(g)
-            game.replaceScene(s)
-        })
+        var t = this
 
-        self.game.registerAction('a', function(keyStatus) {
-            self.g.move(-2, keyStatus)
-            self.g.x -= 1
-        })
-
-        self.game.registerAction('d', function(keyStatus) {
-            self.b.move(this.bird.speed, keyStatus)
-        })
-
-        self.game.registerAction('w', function(keyStatus) {
-            self.bird.jump(-1)
+        t.game.registerAction('w', function(keyStatus) {
+            t.bird.jump(-1)
         })
     }
 
@@ -103,9 +123,17 @@ class Scene extends DjScene {
         var g = this.game
         this.pipe.pipes.forEach((p) => {
             if (this.bird.collide(p)) {
-                // var s = SceneEnd.create(g)
-                // g.replaceScene(s)
+                var s = SceneEnd.create(g)
+                g.replaceScene(s)
+            } else if (p.passed) {
+                config.score++
+                delete p.passed
             }
         })
+    }
+
+    draw() {
+        super.draw()
+        this.game.context.fillText(`当前分数 ${config.score}`, 0, 50)
     }
 }

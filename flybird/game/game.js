@@ -9,6 +9,7 @@ class Game {
         this.keydowns = {}
         this.canvas = document.querySelector('#dj-canvas')
         this.context = this.canvas.getContext('2d')
+        this.context.font = '25px serif'
 
         // change keydowns  state
         var self = this
@@ -89,11 +90,6 @@ class Game {
     textureByName(name) {
         var g = this
         var img = g.images[name]
-        // var image = {
-        //     w: img.width,
-        //     h: img.height,
-        //     image: img,
-        // }
         return img
     }
 

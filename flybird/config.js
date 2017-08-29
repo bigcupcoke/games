@@ -11,4 +11,5 @@ const config = {
         _comment: '鸟飞行的速度',
         value: 2,
     },
+    score: 0,
 }

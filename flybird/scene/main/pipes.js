@@ -1,6 +1,7 @@
 class Pipes {
     constructor(game) {
         this.game = game
+        this.scene = this.game.scene
         this.pipes = []
         this.spaceY = 150
         this.spaceX = 170
@@ -9,9 +10,10 @@ class Pipes {
             var p1 = GameImage.create(game, 'pipe')
             var p2 = GameImage.create(game, 'pipe')
             p1.filpY = true
+            //  passed 是否被小鸟飞过
+            p1.passed = false
             p1.x = 500 + i * this.spaceX
             p2.x = 500 + i * this.spaceX
-            // log("x p", p2.x)
             this.resetPipesPostion(p1, p2)
             this.pipes.push(p1)
             this.pipes.push(p2)
@@ -27,6 +29,18 @@ class Pipes {
         p2.y = p1.y + p2.h + this.spaceY
     }
 
+    //  出界
+    outSide(p1, p2) {
+        var t = this
+        if (p1.x < -40) {
+            p1.x = t.spaceX * t.columsOfPipes
+            p2.x = p1.x
+            p1.passed = false
+            // log('p1x', p1.x)
+            t.resetPipesPostion(p1, p2)
+        }
+    }
+
     update() {
         var t = this
         for (var i = 0; i < this.pipes.length; i+=2) {
@@ -35,16 +49,17 @@ class Pipes {
             p1.x -= 0.9
             p2.x = p1.x
             // log('x', i, p1.x)
-            if (p1.x < -40) {
-                p1.x = t.spaceX * t.columsOfPipes
-                p2.x = p1.x
-                log('p1x', p1.x)
-                this.resetPipesPostion(p1, p2)
+
+            var bird = this.scene.bird
+            // 小鸟飞过管子
+            if (p1.x + p1.w < bird.x) {
+                //  passed属性存在则 true
+                if (p1.passed !== undefined) {
+                    p1.passed = true
+                }
             }
-        }
-        var debugMode = true
-        if (debugMode) {
-            this.debug()
+
+            t.outSide(p1, p2)
         }
     }
 
@@ -71,7 +86,6 @@ class Pipes {
             context.translate(-w2, -h2)
             context.drawImage(p.texture, 0, 0)
             context.restore()
-
         })
     }
 }

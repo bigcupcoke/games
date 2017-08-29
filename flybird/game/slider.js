@@ -12,7 +12,7 @@ class Slider {
 
     init() {
         for (var i = 0; i < 3; i++) {
-            var b = GameImage.create(this.game, 'banner')
+            var b = GameImage.create(this.game, 'slider')
             b.y = 423
             b.x = i * 340
             b.speed = 0.5

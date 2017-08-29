@@ -52,7 +52,8 @@ var __main = function() {
         bird0: 'img/bird0.png',
         bird1: 'img/bird1.png',
 
-        banner: 'img/banner.jpg',
+        begin: 'img/head.jpg',
+        slider: 'img/banner.jpg',
         pipe: 'img/pipe.png',
         earth: 'img/earth.png',
         gameover: 'img/game_over.jpg',
@@ -60,6 +61,8 @@ var __main = function() {
 
     var game = Game.instance(window.fps, images, function(g) {
         var s = SceneBegin.create(g)
+        // var s = SceneEnd.create(g)
+        // var s = Scene.create(g)
         g.runWithScene(s)
     })
 
