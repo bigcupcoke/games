@@ -8,4 +8,8 @@
 ## flybird (小鸟)
 - 完整游戏功能和标题、结束场景
 
-*求萧大收门票(给大佬递茶.jpg)*
+*求萧大收门票 (给大佬递茶.jpg)*
+
+![](../screencast/breakout.gif)
+![](../screencast/air-battle.gif)
+![](../screencast/flybird.gif)
