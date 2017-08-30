@@ -10,6 +10,6 @@
 
 *求萧大收门票 (给大佬递茶.jpg)*
 
-![](../screencast/breakout.gif)
+![](screencast/breakout.gif)
 ![](../screencast/air-battle.gif)
 ![](../screencast/flybird.gif)
