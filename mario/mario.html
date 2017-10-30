@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>mario</title>
+    </head>
+    <body>
+        <canvas id="canvas" width="640" height="640"></canvas>
+        <script type="text/javascript">
+
+            /*
+            8 * 8 像素 每个图块
+            2 bits 每个像素
+            16 bytes 一个图块
+
+            每页  8 * 8 个图块就是 宽高 各 64 个像素
+            */
+            const e = (sel) => document.querySelector(sel)
+            const log = console.log.bind(console)
+
+            const ajax = (request) => {
+                const xhr = new XMLHttpRequest()
+                xhr.responseType = 'arraybuffer'
+                xhr.open(request.method, request.url, true)
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4) {
+                        request.callback(xhr.response)
+                    }
+                }
+                xhr.send()
+            }
+
+            const drawNes = bytes => {
+
+            }
+
+            const __main = () => {
+                let request = {
+                    method: 'GET',
+                    url: 'mario.nes',
+                    callback: (r) => {
+                        let bytes = new Uint8Array(r)
+                        log('bytes', bytes)
+                    },
+                }
+                ajax(request)
+            }
+
+            __main()
+        </script>
+    </body>
+</html>
