@@ -5,7 +5,15 @@
         <title>mario</title>
     </head>
     <body>
-        <canvas id="canvas" width="640" height="640"></canvas>
+
+        <canvas id="dj-canvas" width="320" height="320"></canvas>
+        <div class="controls">
+            <button data-action='change_offset' data-offset='-1024'>-1024</button>
+            <button data-action='change_offset' data-offset='1024'>1024</button>
+            <button data-action='change_offset' data-offset='-16'>-16</button>
+            <button data-action='change_offset' data-offset='16'>16</button>
+        </div>
+        <h3> 0 </h3>
         <script type="text/javascript">
 
             /*
@@ -15,7 +23,12 @@
 
             每页  8 * 8 个图块就是 宽高 各 64 个像素
             */
-            const e = (sel) => document.querySelector(sel)
+
+            const config = {
+                // offset: 0,
+                offset: 32800,
+            }
+            const _e = (sel) => document.querySelector(sel)
             const log = console.log.bind(console)
 
             const ajax = (request) => {
@@ -30,8 +43,74 @@
                 xhr.send()
             }
 
-            const drawNes = bytes => {
+            const drawBlock = (context, data, x, y, pixelWidth) => {
+                const colors = [
+                    'white',
+                    '#FE1000',
+                    '#FFB010',
+                    'black',
+                ]
 
+                let w = pixelWidth
+                let h = pixelWidth
+
+                for (var i = 0; i < 8; i++) {
+                    let p1 = data[i]
+                    let p2 = data[i + 8]
+                    for (var j = 0; j < 8; j++) {
+                        //  每行 8 个像素
+                        // 78 69 0100 1100 0100 0101
+                        let c1 = (p1 >> (7 - j)) & 0b00000001
+                        let c2 = (p2 >> (7 - j)) & 0b00000001
+
+                        let pixel = (c2 << 1) + c1
+                        let color = colors[pixel]
+
+                        context.fillStyle = color
+                        let px = x + j * w
+                        let py = y + i * h
+                        context.fillRect(px, py, w, h)
+                    }
+                }
+            }
+
+            const drawNes = (bytes) => {
+                //  78 69
+                // 第一个方块 ， 转换成二进制
+                let canvas = _e('#dj-canvas')
+                let context = canvas.getContext('2d')
+
+                //  图块长度， 8 像素
+                let blockSize = 8
+                let pixelSize = 8
+                let pixelWidth = 10
+                let numOfBytesBlock = 16
+                for (var i = 0; i < blockSize; i++) {
+                    for (var j = 0; j < blockSize; j++) {
+                        let x = i * pixelSize * pixelWidth
+                        let y = j * pixelSize * pixelWidth
+                        let index = config.offset + (i * 8 + j) * numOfBytesBlock
+                        drawBlock(context, bytes.slice(index), x, y, pixelWidth)
+                    }
+                }
+            }
+
+            const actions = {
+                change_offset: offset => {
+                    config.offset += offset
+                    _e('h3').innerHTML = config.offset
+                    log(config.offset)
+                    drawNes(config.bytes)
+                },
+            }
+
+            const bindEvents = () => {
+                _e('.controls').addEventListener('click', event => {
+                    let dataset = event.target.dataset
+                    let action = dataset.action
+                    let offset = Number(dataset.offset)
+                    actions[action] && actions[action](offset)
+                })
             }
 
             const __main = () => {
@@ -39,11 +118,13 @@
                     method: 'GET',
                     url: 'mario.nes',
                     callback: (r) => {
-                        let bytes = new Uint8Array(r)
-                        log('bytes', bytes)
-                    },
+                        config.bytes = new Uint8Array(r)
+                        log('bytes', config.bytes)
+                        drawNes(config.bytes)
+                     },
                 }
                 ajax(request)
+                bindEvents()
             }
 
             __main()
