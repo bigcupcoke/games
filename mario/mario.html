@@ -6,7 +6,8 @@
     </head>
     <body>
 
-        <canvas id="dj-canvas" width="320" height="320"></canvas>
+        <canvas id="dj-canvas" width="640" height="640"></canvas>
+        <canvas id="dj-canvas-sprite" width="160" height="320"></canvas>
         <div class="controls">
             <button data-action='change_offset' data-offset='-1024'>-1024</button>
             <button data-action='change_offset' data-offset='1024'>1024</button>
@@ -16,17 +17,10 @@
         <h3> 0 </h3>
         <script type="text/javascript">
 
-            /*
-            8 * 8 像素 每个图块
-            2 bits 每个像素
-            16 bytes 一个图块
-
-            每页  8 * 8 个图块就是 宽高 各 64 个像素
-            */
-
             const config = {
                 // offset: 0,
-                offset: 32800,
+                offset: 32784,
+                tileOffset: 32784,
             }
             const _e = (sel) => document.querySelector(sel)
             const log = console.log.bind(console)
@@ -53,7 +47,8 @@
 
                 let w = pixelWidth
                 let h = pixelWidth
-
+                log('x', x)
+                log('y', y)
                 for (var i = 0; i < 8; i++) {
                     let p1 = data[i]
                     let p2 = data[i + 8]
@@ -64,6 +59,8 @@
                         let c2 = (p2 >> (7 - j)) & 0b00000001
 
                         let pixel = (c2 << 1) + c1
+
+                        log('pixel', pixel)
                         let color = colors[pixel]
 
                         context.fillStyle = color
@@ -87,8 +84,8 @@
                 let numOfBytesBlock = 16
                 for (var i = 0; i < blockSize; i++) {
                     for (var j = 0; j < blockSize; j++) {
-                        let x = i * pixelSize * pixelWidth
-                        let y = j * pixelSize * pixelWidth
+                        let x = j * pixelSize * pixelWidth
+                        let y = i * pixelSize * pixelWidth
                         let index = config.offset + (i * 8 + j) * numOfBytesBlock
                         drawBlock(context, bytes.slice(index), x, y, pixelWidth)
                     }
@@ -113,6 +110,23 @@
                 })
             }
 
+            const drawSprite = data => {
+                let ctx = _e('#dj-canvas-sprite').getContext('2d')
+                let pixelWidth = 10
+                let pixelPerBlock = 8
+                let blockSize = pixelWidth * pixelPerBlock
+                let offset = 0
+                for (var i = 0; i < 4; i++) {
+                    for (var j = 0; j < 2; j++) {
+                        let x = j * blockSize
+                        let y = i * blockSize
+                        let pixels = data.slice(offset)
+                        drawBlock(ctx, pixels, x, y, pixelWidth)
+                        offset += 16
+                    }
+                }
+            }
+
             const __main = () => {
                 let request = {
                     method: 'GET',
@@ -120,9 +134,27 @@
                     callback: (r) => {
                         config.bytes = new Uint8Array(r)
                         log('bytes', config.bytes)
-                        drawNes(config.bytes)
+                        let c = config
+                        drawNes(c.bytes)
+
+                        // step 是图上对应 行数
+                        let step = 0
+
+                        let bytesPerBlock = 16
+                        let tilePerSprite = 8
+                        let bytesPerSprite = bytesPerBlock * tilePerSprite
+                        let bytesPer
+                        setInterval(function () {
+                            let offset = c.tileOffset + step * bytesPerSprite
+                            drawSprite(c.bytes.slice(offset))
+                            step ++
+                            step %= 3
+                        }, 200);
+                        drawSprite(c.bytes.slice(c.tileOffset))
                      },
                 }
+                let cache = localStorage.bytes
+                // cache
                 ajax(request)
                 bindEvents()
             }
